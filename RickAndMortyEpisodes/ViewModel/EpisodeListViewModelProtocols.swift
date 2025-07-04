@@ -13,7 +13,7 @@ protocol EpisodeListViewModelProtocol: ObservableObject {
     var state: EpisodeListViewModelState { get }
     func fetchEpisodes() async
     func loadMoreIfNeeded(currentEpisode: Episode) async
-    func refreshIfNeeded() async
+    func performBackgroundRefresh() async -> Bool
 }
 
 protocol EpisodeFetching {

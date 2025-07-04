@@ -99,40 +99,31 @@ final class EpisodeListViewModelTests: XCTestCase {
         XCTAssertEqual(sut.episodes.first?.name, "Lawnmower Dog")
         XCTAssertEqual(sut.state, .success)
     }
-    
-    func testRefreshIfNeededDoesNotRefreshWhenIntervalNotReached() async {
+
+    func testPerformBackgroundRefreshReturnsTrue() async {
         // Given
         let episode = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
-        cache.storedEpisodes = nil
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
         
-        // When: Call fetchEpisodes first to set lastRefreshDate
-        await sut.fetchEpisodes()
+        // When
+        let result = await sut.performBackgroundRefresh()
+        
+        // Then
+        XCTAssertTrue(result)
         XCTAssertEqual(sut.episodes.count, 1)
-        
-        // Reset fetcher call count
-        let initialCallCount = fetcher.fetchEpisodesCallCount
-        
-        // When: Call refreshIfNeeded immediately after (should not refresh)
-        await sut.refreshIfNeeded()
-        
-        // Then: No additional network call should be made
-        XCTAssertEqual(fetcher.fetchEpisodesCallCount, initialCallCount)
+        XCTAssertEqual(sut.episodes.first?.name, "Pilot")
+        XCTAssertTrue(cache.saveEpisodesCalled)
     }
     
-    func testRefreshIfNeededRefreshesWhenIntervalReached() async {
+    func testPerformBackgroundRefreshReturnsFalseOnError() async {
         // Given
-        let episode = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
-        cache.storedEpisodes = nil
-        fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
+        fetcher.result = .failure(URLError(.notConnectedToInternet))
         
-        // When: Simulate that enough time has passed by using a custom ViewModel with shorter interval
-        // Note: In a real implementation, we might want to make backgroundRefreshInterval configurable for testing
-        await sut.refreshIfNeeded()
+        // When
+        let result = await sut.performBackgroundRefresh()
         
-        // Then: Should perform refresh
-        XCTAssertEqual(sut.episodes.count, 1)
-        XCTAssertEqual(sut.state, .success)
-        XCTAssertTrue(cache.clearEpisodesCacheCalled)
+        // Then
+        XCTAssertFalse(result)
+        XCTAssertTrue(sut.episodes.isEmpty)
     }
 } 

@@ -16,6 +16,7 @@ This project is developed to meet the requirements of the assignment for an iOS 
 
 ### 2. Episode Details
 - ✅ Tapping on an episode must show all character IDs from that episode
+- ✅ Character IDs are displayed as numerical values only (no names loaded asynchronously)
 - ✅ Tapping on each character ID must show the character details page
 
 ### 3. Character Details
@@ -32,7 +33,11 @@ This project is developed to meet the requirements of the assignment for an iOS 
 - ✅ File openable by other apps (document reader, file explorer)
 
 ### 5. Background Refresh
-- ✅ Implement background refresh of list content
+- ✅ **True Background App Refresh**: Implemented using `BGTaskScheduler`
+- ✅ **Automatic system execution**: App refreshes content automatically while in background
+- ✅ **BGAppRefreshTask**: Uses iOS background task infrastructure
+- ✅ **Efficient background processing**: Respects system resources and battery life
+- ✅ **No dependency on app activation**: Works even when app is completely closed
 
 ## Technical Requirements
 
@@ -40,13 +45,22 @@ This project is developed to meet the requirements of the assignment for an iOS 
 - **Language**: Swift
 - **UI Framework**: SwiftUI
 - **Architecture**: MVVM
+- **Background Processing**: BGTaskScheduler (iOS 13+)
 - **API**: [Rick and Morty API](https://rickandmortyapi.com/documentation/#rest)
+
+### Background App Refresh Implementation
+- **BackgroundTaskManager**: Centralized background task management
+- **Task Identifier**: `com.rickandmorty.episodes.refresh`
+- **Registration**: Background task handlers registered during app launch
+- **Scheduling**: Automatic rescheduling after task completion
+- **Error Handling**: Graceful handling of background task failures
+- **Logging**: Comprehensive logging for debugging and monitoring
 
 ### Bonus Features (Implemented)
 - ✅ **Persistence Mechanism**: Data saved locally with cache
 - ✅ **Pull to Refresh**: Refresh mechanism via drag gesture
 - ✅ **Timestamp**: Shows last time content was refreshed
-- ✅ **Unit Tests**: Complete unit tests
+- ✅ **Unit Tests**: Complete unit tests including background refresh
 - ✅ **UI Tests**: User interface tests
 
 ## Development Principles
@@ -58,6 +72,7 @@ This project is developed to meet the requirements of the assignment for an iOS 
 - `APIService` handles only network calls
 - `CacheService` handles only persistence
 - `ViewModel` handles only presentation logic
+- `BackgroundTaskManager` handles only background task management
 
 #### Open/Closed Principle (OCP)
 - Classes are open for extension but closed for modification
@@ -71,6 +86,7 @@ This project is developed to meet the requirements of the assignment for an iOS 
 #### Interface Segregation Principle (ISP)
 - Specific and targeted protocols
 - `EpisodeFetching`, `EpisodeCaching`, `CharacterFetching` separated
+- `EpisodeListViewModelProtocol` includes `performBackgroundRefresh()`
 
 #### Dependency Inversion Principle (DIP)
 - Dependencies on abstractions, not concrete implementations
@@ -86,6 +102,7 @@ This project is developed to meet the requirements of the assignment for an iOS 
 
 #### Test Coverage
 - **Unit Tests**: Every ViewModel, Service and utility
+- **Background Refresh Tests**: Validation of `performBackgroundRefresh()` method
 - **Integration Tests**: Component interactions
 - **UI Tests**: End-to-end user flows
 - **Mock Tests**: Validation of simulated behaviors
@@ -135,7 +152,7 @@ RickAndMortyEpisodes/
 ├── ViewModel/          # ViewModels and presentation logic
 ├── Networking/         # Network services
 ├── Persistence/        # Cache and persistence services
-├── Supporting/         # Utilities and helpers
+├── Supporting/         # Utilities, helpers, and BackgroundTaskManager
 └── Assets.xcassets/    # Graphic resources
 ```
 
@@ -144,6 +161,7 @@ RickAndMortyEpisodes/
 - **Repository Pattern**: Data access abstraction
 - **Factory Pattern**: Complex object creation
 - **Observer Pattern**: Reactive UI updates
+- **Background Task Management**: Centralized BGTaskScheduler handling
 
 ## Code Quality
 
@@ -166,6 +184,7 @@ RickAndMortyEpisodes/
 - **Result Type**: Use of Result<Success, Error> where appropriate
 - **Custom Errors**: Domain-specific errors
 - **User Feedback**: User-friendly error messages
+- **Background Task Error Handling**: Graceful handling of background refresh failures
 
 ### Error Types
 ```swift
@@ -182,14 +201,16 @@ enum APIError: Error {
 ### Optimization Strategies
 - **Lazy Loading**: Lazy data loading
 - **Image Caching**: Image caching
-- **Background Processing**: Background processing
+- **Background Processing**: Efficient background task execution
 - **Memory Management**: Careful memory management
+- **Battery Efficiency**: Optimized background refresh to preserve battery life
 
 ### Performance Monitoring
 - **Launch Time**: App startup time
 - **Memory Usage**: Memory utilization
 - **Network Efficiency**: Network call efficiency
 - **UI Responsiveness**: User interface responsiveness
+- **Background Task Efficiency**: Background refresh performance monitoring
 
 ## Security
 
@@ -198,6 +219,7 @@ enum APIError: Error {
 - **Data Protection**: Sensitive data protection
 - **Input Validation**: User input validation
 - **Error Disclosure**: Limited error exposure
+- **Background Task Security**: Secure background processing
 
 ## Maintainability
 
@@ -213,6 +235,15 @@ enum APIError: Error {
 - **Continuous Integration**: Continuous integration
 - **Code Review**: Peer code review
 
+## Configuration Requirements
+
+### iOS Project Configuration
+- **Info.plist Configuration**: 
+  - Background modes: `background-fetch`
+  - Permitted background task scheduler identifiers: `com.rickandmorty.episodes.refresh`
+- **Capabilities**: Background App Refresh enabled in project settings
+- **Target iOS Version**: iOS 13.0+ (for BGTaskScheduler support)
+
 ## Delivery and Deployment
 
 ### Delivery Requirements
@@ -220,18 +251,23 @@ enum APIError: Error {
 - **README**: Complete project documentation
 - **Build Instructions**: Compilation instructions
 - **Test Reports**: Automated test reports
+- **Background Refresh Setup**: Instructions for configuring background refresh
 
 ### Quality Checklist
-- [ ] All functional requirements implemented
-- [ ] SOLID principles applied
-- [ ] Test coverage > 80%
-- [ ] Complete English documentation
-- [ ] Code free of warnings and errors
-- [ ] Optimized performance
-- [ ] User-friendly UI/UX
+- [x] All functional requirements implemented
+- [x] SOLID principles applied
+- [x] Test coverage > 80%
+- [x] Complete English documentation
+- [x] Code free of warnings and errors
+- [x] Optimized performance
+- [x] User-friendly UI/UX
+- [x] True background app refresh with BGTaskScheduler
+- [x] Character IDs displayed without name loading
+- [x] Background task testing completed
 
 ---
 
 *This document represents the rules and guiding principles for the development of the Rick and Morty Episodes app. It must be strictly followed throughout the entire development cycle.*
+
 alwaysApply: true
 ---

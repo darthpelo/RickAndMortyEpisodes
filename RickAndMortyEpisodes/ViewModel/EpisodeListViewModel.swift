@@ -11,27 +11,9 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     private var isLoadingMore: Bool = false
     private var lastRefreshDate: Date?
     
-    /// Minimum time interval (in seconds) between automatic background refreshes
-    private let backgroundRefreshInterval: TimeInterval = 300 // 5 minutes
-    
     init(fetcher: EpisodeFetching, cache: EpisodeCaching) {
         self.fetcher = fetcher
         self.cache = cache
-    }
-    
-    /// Refreshes data if enough time has passed since last refresh
-    func refreshIfNeeded() async {
-        let now = Date()
-        
-        // Check if enough time has passed since last refresh
-        if let lastRefresh = lastRefreshDate,
-           now.timeIntervalSince(lastRefresh) < backgroundRefreshInterval {
-            return // Too soon to refresh
-        }
-        
-        // Perform background refresh
-        await fetchEpisodes(forceRefresh: true)
-        lastRefreshDate = now
     }
     
     func fetchEpisodes(forceRefresh: Bool = false) async {
@@ -83,5 +65,33 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     
     func fetchEpisodes() async {
         await fetchEpisodes(forceRefresh: false)
+    }
+    
+    /// Performs background refresh optimized for BGTaskScheduler
+    /// This method is designed to run efficiently in background without UI updates
+    /// - Returns: Boolean indicating success/failure of the background refresh
+    func performBackgroundRefresh() async -> Bool {
+        do {
+            // Fetch first page of episodes (most recent content)
+            let response = try await fetcher.fetchEpisodes(page: 1)
+            
+            // Update cache with fresh data
+            cache.saveEpisodes(response.results)
+            
+            // Update internal state for when app returns to foreground
+            episodes = response.results
+            currentPage = 1
+            totalPages = response.info.pages
+            lastRefreshDate = Date()
+            
+            // Do not update UI state (.loading, .success) as app is in background
+            // State will be updated when app comes to foreground
+            
+            return true
+        } catch {
+            // Background refresh failed, return false
+            // Do not update any state to avoid affecting foreground experience
+            return false
+        }
     }
 } 
