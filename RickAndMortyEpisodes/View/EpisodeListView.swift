@@ -2,6 +2,7 @@ import SwiftUI
 
 struct EpisodeListView: View {
     @StateObject private var viewModel: EpisodeListViewModel
+    @Environment(\.scenePhase) private var scenePhase
     
     init(viewModel: EpisodeListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -55,6 +56,13 @@ struct EpisodeListView: View {
             }
             .navigationTitle("Episodes")
             .task { await viewModel.fetchEpisodes() }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    Task {
+                        await viewModel.refreshIfNeeded()
+                    }
+                }
+            }
         }
     }
 }

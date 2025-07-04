@@ -5,6 +5,7 @@ import Foundation
 class MockEpisodeFetcher: EpisodeFetching {
     var result: Result<EpisodeResponse, Error>?
     var fetchEpisodesCalled = false
+    var fetchEpisodesCallCount = 0
     var lastRequestedPage: Int?
     
     // For character fetching
@@ -14,6 +15,7 @@ class MockEpisodeFetcher: EpisodeFetching {
 
     func fetchEpisodes(page: Int) async throws -> EpisodeResponse {
         fetchEpisodesCalled = true
+        fetchEpisodesCallCount += 1
         lastRequestedPage = page
         if let result = result {
             switch result {

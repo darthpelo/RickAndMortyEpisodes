@@ -9,10 +9,29 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     private var currentPage: Int = 1
     private var totalPages: Int = 1
     private var isLoadingMore: Bool = false
+    private var lastRefreshDate: Date?
+    
+    /// Minimum time interval (in seconds) between automatic background refreshes
+    private let backgroundRefreshInterval: TimeInterval = 300 // 5 minutes
     
     init(fetcher: EpisodeFetching, cache: EpisodeCaching) {
         self.fetcher = fetcher
         self.cache = cache
+    }
+    
+    /// Refreshes data if enough time has passed since last refresh
+    func refreshIfNeeded() async {
+        let now = Date()
+        
+        // Check if enough time has passed since last refresh
+        if let lastRefresh = lastRefreshDate,
+           now.timeIntervalSince(lastRefresh) < backgroundRefreshInterval {
+            return // Too soon to refresh
+        }
+        
+        // Perform background refresh
+        await fetchEpisodes(forceRefresh: true)
+        lastRefreshDate = now
     }
     
     func fetchEpisodes(forceRefresh: Bool = false) async {
@@ -33,6 +52,7 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             state = .success
             currentPage = 1
             totalPages = response.info.pages
+            lastRefreshDate = Date()
         } catch _ as URLError {
             episodes = []
             state = .failure("Network error")
