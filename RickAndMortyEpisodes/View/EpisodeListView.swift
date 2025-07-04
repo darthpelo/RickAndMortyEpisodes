@@ -48,6 +48,9 @@ struct EpisodeListView: View {
                         }
                     }
                     .listStyle(.plain)
+                    .refreshable {
+                        await viewModel.fetchEpisodes()
+                    }
                 }
             }
             .navigationTitle("Episodes")
