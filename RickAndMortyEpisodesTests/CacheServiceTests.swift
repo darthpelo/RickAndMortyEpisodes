@@ -32,7 +32,7 @@ final class CacheServiceTests: XCTestCase {
         // Given
         let origin = Origin(name: "Earth", url: "")
         let location = Location(name: "Earth", url: "")
-        let character = Character(id: 1, name: "Rick Sanchez", status: "Alive", species: "Human", type: "", gender: "Male", origin: origin, location: location, image: "", episodes: [], url: "", created: "")
+        let character = Character(id: 1, name: "Rick Sanchez", status: "Alive", species: "Human", type: "", gender: "Male", origin: origin, location: location, image: "", episode: [], url: "", created: "")
         // When
         sut.saveCharacters([character])
         let loaded = sut.loadCharacters()

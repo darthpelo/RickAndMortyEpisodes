@@ -62,8 +62,8 @@ final class EpisodeDetailViewModelTests: XCTestCase {
             created: ""
         )
         let mockFetcher = MockEpisodeFetcher()
-        let character1 = Character(id: 1, name: "Rick", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episodes: [], url: "", created: "")
-        let character2 = Character(id: 2, name: "Morty", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episodes: [], url: "", created: "")
+        let character1 = Character(id: 1, name: "Rick", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episode: [], url: "", created: "")
+        let character2 = Character(id: 2, name: "Morty", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episode: [], url: "", created: "")
         mockFetcher.characterResultForID = { id in
             if id == 1 { return .success(character1) }
             if id == 2 { return .success(character2) }

@@ -30,7 +30,7 @@ final class CharacterDetailLoaderViewModelTests: XCTestCase {
             origin: Origin(name: "Earth", url: ""),
             location: Location(name: "Earth", url: ""),
             image: "",
-            episodes: [],
+            episode: [],
             url: "",
             created: ""
         )
@@ -63,7 +63,7 @@ final class CharacterDetailLoaderViewModelTests: XCTestCase {
     func testStateIsLoadingWhileFetching() async {
         // Given
         mockFetcher.characterResult = .success(Character(
-            id: 1, name: "", status: "", species: "", type: "", gender: "", origin: Origin(name: "", url: ""), location: Location(name: "", url: ""), image: "", episodes: [], url: "", created: ""
+            id: 1, name: "", status: "", species: "", type: "", gender: "", origin: Origin(name: "", url: ""), location: Location(name: "", url: ""), image: "", episode: [], url: "", created: ""
         ))
         var states: [CharacterDetailLoaderState] = []
         let cancellable = sut.$state.sink { states.append($0) }

@@ -23,7 +23,7 @@ final class APIServiceTests: XCTestCase {
     func testFetchEpisodesSuccess() async throws {
         // Given
         let json = """
-        {"info":{"count":1,"pages":1,"next":null,"prev":null},"results":[{"id":1,"name":"Pilot","airDate":"December 2, 2013","episode":"S01E01","characters":[],"url":"https://rickandmortyapi.com/api/episode/1","created":"2017-11-10T12:56:33.798Z"}]}
+        {"info":{"count":1,"pages":1,"next":null,"prev":null},"results":[{"id":1,"name":"Pilot","air_date":"December 2, 2013","episode":"S01E01","characters":[],"url":"https://rickandmortyapi.com/api/episode/1","created":"2017-11-10T12:56:33.798Z"}]}
         """.data(using: .utf8)!
         MockURLProtocol.requestHandler = { request in
             let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
@@ -39,7 +39,7 @@ final class APIServiceTests: XCTestCase {
     func testFetchCharacterSuccess() async throws {
         // Given
         let json = """
-        {"id":1,"name":"Rick Sanchez","status":"Alive","species":"Human","type":"","gender":"Male","origin":{"name":"Earth","url":""},"location":{"name":"Earth","url":""},"image":"https://rickandmortyapi.com/api/character/avatar/1.jpeg","episodes":[],"url":"https://rickandmortyapi.com/api/character/1","created":"2017-11-04T18:48:46.250Z"}
+        {"id":1,"name":"Rick Sanchez","status":"Alive","species":"Human","type":"","gender":"Male","origin":{"name":"Earth","url":""},"location":{"name":"Earth","url":""},"image":"https://rickandmortyapi.com/api/character/avatar/1.jpeg","episode":[],"url":"https://rickandmortyapi.com/api/character/1","created":"2017-11-04T18:48:46.250Z"}
         """.data(using: .utf8)!
         MockURLProtocol.requestHandler = { request in
             let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!

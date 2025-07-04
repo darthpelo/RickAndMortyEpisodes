@@ -69,7 +69,7 @@ struct CharacterDetailView_Previews: PreviewProvider {
             origin: Origin(name: "Earth", url: ""),
             location: Location(name: "Earth", url: ""),
             image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episodes: ["url1", "url2"],
+            episode: ["url1", "url2"],
             url: "",
             created: ""
         )

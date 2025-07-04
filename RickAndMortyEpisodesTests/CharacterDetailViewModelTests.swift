@@ -20,7 +20,7 @@ final class CharacterDetailViewModelTests: XCTestCase {
             origin: origin,
             location: location,
             image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episodes: ["url1", "url2"],
+            episode: ["url1", "url2"],
             url: "",
             created: ""
         )
