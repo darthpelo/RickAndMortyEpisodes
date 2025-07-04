@@ -21,7 +21,7 @@ final class APIService: EpisodeFetching {
         return try JSONDecoder().decode(EpisodeResponse.self, from: data)
     }
     
-    // Fetches character details by ID
+    // Fetches character details by ID (required by EpisodeFetching)
     func fetchCharacter(id: Int) async throws -> Character {
         let urlString = "\(baseURL)character/\(id)"
         guard let url = URL(string: urlString) else {

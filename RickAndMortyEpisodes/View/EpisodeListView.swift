@@ -67,6 +67,24 @@ private class PreviewMockFetcher: EpisodeFetching {
             ]
         )
     }
+    
+    // Required by EpisodeFetching protocol
+    func fetchCharacter(id: Int) async throws -> Character {
+        return Character(
+            id: id,
+            name: "Preview Character",
+            status: "Alive",
+            species: "Human",
+            type: "",
+            gender: "Male",
+            origin: Origin(name: "Earth", url: ""),
+            location: Location(name: "Earth", url: ""),
+            image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            episode: ["url1", "url2"],
+            url: "",
+            created: ""
+        )
+    }
 }
 private class PreviewMockCache: EpisodeCaching {
     func saveEpisodes(_ episodes: [Episode]) {}

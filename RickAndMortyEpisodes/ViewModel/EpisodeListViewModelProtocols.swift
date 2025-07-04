@@ -17,6 +17,7 @@ protocol EpisodeListViewModelProtocol: ObservableObject {
 
 protocol EpisodeFetching {
     func fetchEpisodes(page: Int) async throws -> EpisodeResponse
+    func fetchCharacter(id: Int) async throws -> Character
 }
 
 protocol EpisodeCaching {
