@@ -1,6 +1,7 @@
 import XCTest
 @testable import RickAndMortyEpisodes
 
+@MainActor
 final class EpisodeListViewModelTests: XCTestCase {
     var fetcher: MockEpisodeFetcher!
     var cache: MockEpisodeCache!
@@ -10,6 +11,7 @@ final class EpisodeListViewModelTests: XCTestCase {
         super.setUp()
         fetcher = MockEpisodeFetcher()
         cache = MockEpisodeCache()
+        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
     }
 
     override func tearDown() {
@@ -25,7 +27,6 @@ final class EpisodeListViewModelTests: XCTestCase {
         let episode = Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
         cache.storedEpisodes = [episode]
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
-        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
         await sut.fetchEpisodes()
         // Then: episodes from cache are shown immediately
@@ -40,7 +41,6 @@ final class EpisodeListViewModelTests: XCTestCase {
         let episode = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         cache.storedEpisodes = nil
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
-        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
         await sut.fetchEpisodes()
         // Then: episodes from network are shown
@@ -54,7 +54,6 @@ final class EpisodeListViewModelTests: XCTestCase {
         // Given: network returns error
         cache.storedEpisodes = nil
         fetcher.result = .failure(URLError(.notConnectedToInternet))
-        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
         await sut.fetchEpisodes()
         // Then: state is failure with error message
@@ -69,7 +68,6 @@ final class EpisodeListViewModelTests: XCTestCase {
         let episode2 = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         let pageInfo = PageInfo(count: 2, pages: 2, next: "next", prev: nil)
         fetcher.result = .success(EpisodeResponse(info: pageInfo, results: [episode1]))
-        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         await sut.fetchEpisodes()
         // When: loading more episodes
         fetcher.result = .success(EpisodeResponse(info: pageInfo, results: [episode2]))
@@ -85,7 +83,6 @@ final class EpisodeListViewModelTests: XCTestCase {
         cache.storedEpisodes = nil
         struct DummyError: Error {}
         fetcher.result = .failure(DummyError())
-        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
         await sut.fetchEpisodes()
         // Then: state is failure

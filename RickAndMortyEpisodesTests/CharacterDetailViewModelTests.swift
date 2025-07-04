@@ -1,6 +1,7 @@
 import XCTest
 @testable import RickAndMortyEpisodes
 
+@MainActor
 final class CharacterDetailViewModelTests: XCTestCase {
     var sut: CharacterDetailViewModel!
     var character: Character!
@@ -32,8 +33,7 @@ final class CharacterDetailViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    // Test exposing all required properties
-    func testExposedProperties() {
+    func testExposedProperties() async {
         // Given: a character
         // When: initializing the view model
         // Then: all properties should be exposed correctly
@@ -45,8 +45,7 @@ final class CharacterDetailViewModelTests: XCTestCase {
         XCTAssertEqual(sut.imageURL, URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg"))
     }
 
-    // Test exporting character details to JSON
-    func testExportCharacterDetailsCreatesJSONFile() throws {
+    func testExportCharacterDetailsCreatesJSONFile() async throws {
         // Given: a character
         // When: exporting details
         let fileURL = try sut.exportCharacterDetails()

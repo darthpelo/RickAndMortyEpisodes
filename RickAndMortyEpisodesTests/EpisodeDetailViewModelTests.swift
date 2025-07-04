@@ -1,8 +1,14 @@
 import XCTest
 @testable import RickAndMortyEpisodes
 
+@MainActor
 final class EpisodeDetailViewModelTests: XCTestCase {
     var sut: EpisodeDetailViewModel!
+
+    override func setUp() {
+        super.setUp()
+        // No dependencies to inject, just initialize in each test
+    }
 
     override func tearDown() {
         sut = nil
@@ -10,7 +16,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
     }
 
     // Test extracting character IDs from episode with characters
-    func testCharacterIDsExtractionWithCharacters() {
+    func testCharacterIDsExtractionWithCharacters() async {
         // Given: an episode with character URLs
         let episode = Episode(
             id: 1,
@@ -31,7 +37,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
     }
 
     // Test extracting character IDs from episode with no characters
-    func testCharacterIDsExtractionWithNoCharacters() {
+    func testCharacterIDsExtractionWithNoCharacters() async {
         // Given: an episode with no character URLs
         let episode = Episode(
             id: 2,
