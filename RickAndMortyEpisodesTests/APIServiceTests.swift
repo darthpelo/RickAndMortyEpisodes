@@ -2,7 +2,7 @@ import XCTest
 @testable import RickAndMortyEpisodes
 
 final class APIServiceTests: XCTestCase {
-    var apiService: APIService!
+    var sut: APIService!
     var session: URLSession!
 
     override func setUp() {
@@ -10,11 +10,11 @@ final class APIServiceTests: XCTestCase {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [MockURLProtocol.self]
         session = URLSession(configuration: config)
-        apiService = APIService(session: session)
+        sut = APIService(session: session)
     }
 
     override func tearDown() {
-        apiService = nil
+        sut = nil
         session = nil
         MockURLProtocol.requestHandler = nil
         super.tearDown()
@@ -31,7 +31,7 @@ final class APIServiceTests: XCTestCase {
             return (response, json)
         }
         // When: fetching episodes
-        let response = try await apiService.fetchEpisodes(page: 1)
+        let response = try await sut.fetchEpisodes(page: 1)
         // Then: the result should be parsed correctly
         XCTAssertEqual(response.results.count, 1)
         XCTAssertEqual(response.results.first?.name, "Pilot")
@@ -48,7 +48,7 @@ final class APIServiceTests: XCTestCase {
             return (response, json)
         }
         // When: fetching a character
-        let character = try await apiService.fetchCharacter(id: 1)
+        let character = try await sut.fetchCharacter(id: 1)
         // Then: the result should be parsed correctly
         XCTAssertEqual(character.name, "Rick Sanchez")
         XCTAssertEqual(character.status, "Alive")
@@ -62,7 +62,7 @@ final class APIServiceTests: XCTestCase {
         }
         // When: fetching episodes
         do {
-            _ = try await apiService.fetchEpisodes(page: 1)
+            _ = try await sut.fetchEpisodes(page: 1)
             XCTFail("Expected error was not thrown")
         } catch {
             // Then: a URLError should be thrown
@@ -80,7 +80,7 @@ final class APIServiceTests: XCTestCase {
         }
         // When: fetching episodes
         do {
-            _ = try await apiService.fetchEpisodes(page: 1)
+            _ = try await sut.fetchEpisodes(page: 1)
             XCTFail("Expected decoding error was not thrown")
         } catch {
             // Then: a DecodingError should be thrown
