@@ -3,7 +3,7 @@ import Foundation
 struct Episode: Codable, Identifiable {
     let id: Int
     let name: String
-    let air_date: String
+    let airDate: String
     let episode: String
     let characters: [String]
     let url: String
@@ -16,9 +16,9 @@ extension Episode {
         inputFormatter.dateFormat = "MMMM d, yyyy"
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "dd/MM/yyyy"
-        if let date = inputFormatter.date(from: air_date) {
+        if let date = inputFormatter.date(from: airDate) {
             return outputFormatter.string(from: date)
         }
-        return air_date
+        return airDate
     }
 }

@@ -15,7 +15,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1",
@@ -35,7 +35,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 2,
             name: "Lawnmower Dog",
-            air_date: "December 9, 2013",
+            airDate: "December 9, 2013",
             episode: "S01E02",
             characters: [],
             url: "",
@@ -52,7 +52,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1",
@@ -62,8 +62,8 @@ final class EpisodeDetailViewModelTests: XCTestCase {
             created: ""
         )
         let mockFetcher = MockEpisodeFetcher()
-        let character1 = Character(id: 1, name: "Rick", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episode: [], url: "", created: "")
-        let character2 = Character(id: 2, name: "Morty", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episode: [], url: "", created: "")
+        let character1 = Character(id: 1, name: "Rick", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episodes: [], url: "", created: "")
+        let character2 = Character(id: 2, name: "Morty", status: "Alive", species: "Human", type: "", gender: "Male", origin: Origin(name: "Earth", url: ""), location: Location(name: "Earth", url: ""), image: "", episodes: [], url: "", created: "")
         mockFetcher.characterResultForID = { id in
             if id == 1 { return .success(character1) }
             if id == 2 { return .success(character2) }
@@ -84,7 +84,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1"

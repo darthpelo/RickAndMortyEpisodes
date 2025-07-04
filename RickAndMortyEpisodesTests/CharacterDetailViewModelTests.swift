@@ -20,7 +20,7 @@ final class CharacterDetailViewModelTests: XCTestCase {
             origin: origin,
             location: location,
             image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episode: ["url1", "url2"],
+            episodes: ["url1", "url2"],
             url: "",
             created: ""
         )
@@ -34,9 +34,7 @@ final class CharacterDetailViewModelTests: XCTestCase {
     }
 
     func testExposedProperties() async {
-        // Given: a character
-        // When: initializing the view model
-        // Then: all properties should be exposed correctly
+        // Then
         XCTAssertEqual(sut.name, "Rick Sanchez")
         XCTAssertEqual(sut.status, "Alive")
         XCTAssertEqual(sut.species, "Human")
@@ -46,10 +44,9 @@ final class CharacterDetailViewModelTests: XCTestCase {
     }
 
     func testExportCharacterDetailsCreatesJSONFile() async throws {
-        // Given: a character
-        // When: exporting details
+        // When
         let fileURL = try sut.exportCharacterDetails()
-        // Then: the file should exist and contain the correct JSON
+        // Then
         let data = try Data(contentsOf: fileURL)
         let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         XCTAssertEqual(json?["name"] as? String, "Rick Sanchez")

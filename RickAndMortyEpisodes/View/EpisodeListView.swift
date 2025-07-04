@@ -65,8 +65,8 @@ private class PreviewMockFetcher: EpisodeFetching {
         return EpisodeResponse(
             info: PageInfo(count: 2, pages: 1, next: nil, prev: nil),
             results: [
-                Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: ""),
-                Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
+                Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: ""),
+                Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
             ]
         )
     }
@@ -83,7 +83,7 @@ private class PreviewMockFetcher: EpisodeFetching {
             origin: Origin(name: "Earth", url: ""),
             location: Location(name: "Earth", url: ""),
             image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episode: ["url1", "url2"],
+            episodes: ["url1", "url2"],
             url: "",
             created: ""
         )
@@ -100,8 +100,8 @@ struct EpisodeListView_Previews: PreviewProvider {
     static var previews: some View {
         let mockViewModel = EpisodeListViewModel(fetcher: PreviewMockFetcher(), cache: PreviewMockCache())
         mockViewModel.episodes = [
-            Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: ""),
-            Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
+            Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: ""),
+            Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         ]
         mockViewModel.state = EpisodeListViewModelState.success
         return EpisodeListView(viewModel: mockViewModel)

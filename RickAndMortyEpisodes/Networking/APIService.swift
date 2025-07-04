@@ -1,7 +1,6 @@
 import Foundation
 
 final class APIService: EpisodeFetching {
-    // Singleton instance for production use
     static let shared = APIService()
     // URLSession is injected for testability; defaults to .shared
     private let session: URLSession
@@ -31,16 +30,3 @@ final class APIService: EpisodeFetching {
         return try JSONDecoder().decode(Character.self, from: data)
     }
 }
-
-// Response for paginated episodes
-struct EpisodeResponse: Codable {
-    let info: PageInfo
-    let results: [Episode]
-}
-
-struct PageInfo: Codable {
-    let count: Int
-    let pages: Int
-    let next: String?
-    let prev: String?
-} 
