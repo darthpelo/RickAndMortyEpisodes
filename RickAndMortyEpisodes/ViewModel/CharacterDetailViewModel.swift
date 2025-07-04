@@ -1,6 +1,6 @@
 import Foundation
 
-/// ViewModel for the character detail screen
+@MainActor
 final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
     let character: Character
     var imageURL: URL? { URL(string: character.image) }
@@ -14,7 +14,6 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
         self.character = character
     }
     
-    /// Exports character details to a JSON file and returns the file URL
     func exportCharacterDetails() throws -> URL {
         let exportDict: [String: Any] = [
             "name": character.name,

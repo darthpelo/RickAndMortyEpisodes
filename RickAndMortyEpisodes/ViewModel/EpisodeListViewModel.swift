@@ -1,6 +1,6 @@
 import Foundation
 
-/// Empty implementation of the episode list view model for TDD
+@MainActor
 final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     @Published var episodes: [Episode] = []
     @Published var state: EpisodeListViewModelState = .idle
@@ -15,7 +15,6 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
         self.cache = cache
     }
     
-    /// Loads episodes from cache if available, otherwise fetches from network
     func fetchEpisodes() async {
         if let cached = cache.loadEpisodes(), !cached.isEmpty {
             episodes = cached
@@ -32,17 +31,14 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             currentPage = 1
             totalPages = response.info.pages
         } catch _ as URLError {
-            // Handle network error
             episodes = []
             state = .failure("Network error")
         } catch {
-            // Handle decoding or other errors
             episodes = []
             state = .failure("Decoding error")
         }
     }
     
-    /// Loads the next page of episodes if needed
     func loadMoreIfNeeded(currentEpisode: Episode) async {
         // Check if we are already loading or if there are no more pages
         guard !isLoadingMore, currentPage < totalPages else { return }

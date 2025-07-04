@@ -1,6 +1,6 @@
 import Foundation
 
-/// Protocol for the character detail view model
+@MainActor
 protocol CharacterDetailViewModelProtocol: ObservableObject {
     var character: Character { get }
     var imageURL: URL? { get }
