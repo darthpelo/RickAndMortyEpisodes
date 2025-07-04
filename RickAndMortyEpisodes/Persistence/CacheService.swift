@@ -46,4 +46,9 @@ final class CacheService: EpisodeCaching {
         guard let data = store.data(forKey: charactersKey) else { return nil }
         return try? JSONDecoder().decode([Character].self, from: data)
     }
+    
+    // Cancella la cache degli episodi
+    func clearEpisodesCache() {
+        store.set(nil, forKey: episodesKey)
+    }
 } 

@@ -49,7 +49,7 @@ struct EpisodeListView: View {
                     }
                     .listStyle(.plain)
                     .refreshable {
-                        await viewModel.fetchEpisodes()
+                        await viewModel.fetchEpisodes(forceRefresh: true)
                     }
                 }
             }
@@ -92,6 +92,7 @@ private class PreviewMockFetcher: EpisodeFetching {
 private class PreviewMockCache: EpisodeCaching {
     func saveEpisodes(_ episodes: [Episode]) {}
     func loadEpisodes() -> [Episode]? { nil }
+    func clearEpisodesCache() {}
 }
 
 // MARK: - Preview

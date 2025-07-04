@@ -15,13 +15,16 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
         self.cache = cache
     }
     
-    func fetchEpisodes() async {
-        if let cached = cache.loadEpisodes(), !cached.isEmpty {
+    func fetchEpisodes(forceRefresh: Bool = false) async {
+        if forceRefresh {
+            cache.clearEpisodesCache()
+        }
+        if !forceRefresh, let cached = cache.loadEpisodes(), !cached.isEmpty {
             episodes = cached
             state = .success
             return
         }
-        // Fetch from network if cache is empty
+        // Fetch from network if cache is empty or forceRefresh
         state = .loading
         do {
             let response = try await fetcher.fetchEpisodes(page: 1)
@@ -56,5 +59,9 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             // Ignore errors for pagination in this implementation
         }
         isLoadingMore = false
+    }
+    
+    func fetchEpisodes() async {
+        await fetchEpisodes(forceRefresh: false)
     }
 } 
