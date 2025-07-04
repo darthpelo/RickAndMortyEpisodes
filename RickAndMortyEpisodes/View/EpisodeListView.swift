@@ -59,51 +59,64 @@ struct EpisodeListView: View {
     }
 }
 
-// MARK: - Preview mocks (only for SwiftUI preview)
-private class PreviewMockFetcher: EpisodeFetching {
-    func fetchEpisodes(page: Int) async throws -> EpisodeResponse {
-        return EpisodeResponse(
-            info: PageInfo(count: 2, pages: 1, next: nil, prev: nil),
-            results: [
-                Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: ""),
-                Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
-            ]
-        )
-    }
-    
-    // Required by EpisodeFetching protocol
-    func fetchCharacter(id: Int) async throws -> Character {
-        return Character(
-            id: id,
-            name: "Preview Character",
-            status: "Alive",
-            species: "Human",
-            type: "",
-            gender: "Male",
-            origin: Origin(name: "Earth", url: ""),
-            location: Location(name: "Earth", url: ""),
-            image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episode: ["url1", "url2"],
-            url: "",
-            created: ""
-        )
-    }
-}
-private class PreviewMockCache: EpisodeCaching {
-    func saveEpisodes(_ episodes: [Episode]) {}
-    func loadEpisodes() -> [Episode]? { nil }
-    func clearEpisodesCache() {}
-}
+// MARK: - Preview Support
+#if DEBUG
+// Mock classes are now centralized in PreviewMockFactory.swift
+// This file focuses only on preview configuration
 
-// MARK: - Preview
+// MARK: - Preview Variants
 struct EpisodeListView_Previews: PreviewProvider {
     static var previews: some View {
-        let mockViewModel = EpisodeListViewModel(fetcher: PreviewMockFetcher(), cache: PreviewMockCache())
-        mockViewModel.episodes = [
-            Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: ""),
-            Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
-        ]
-        mockViewModel.state = EpisodeListViewModelState.success
-        return EpisodeListView(viewModel: mockViewModel)
+        Group {
+            // Preview: Success State
+            EpisodeListView(
+                viewModel: PreviewMockFactory.createEpisodeListViewModel(
+                    scenario: .success
+                )
+            )
+            .previewDisplayName("Success State")
+            
+            // Preview: Loading State
+            EpisodeListView(
+                viewModel: PreviewMockFactory.createEpisodeListViewModel(
+                    scenario: .loading
+                )
+            )
+            .previewDisplayName("Loading State")
+            
+            // Preview: Error State
+            EpisodeListView(
+                viewModel: PreviewMockFactory.createEpisodeListViewModel(
+                    scenario: .networkError
+                )
+            )
+            .previewDisplayName("Network Error")
+            
+            // Preview: Empty List
+            EpisodeListView(
+                viewModel: PreviewMockFactory.createEpisodeListViewModel(
+                    scenario: .emptyList
+                )
+            )
+            .previewDisplayName("Empty List")
+            
+            // Preview: Long List (for testing scrolling)
+            EpisodeListView(
+                viewModel: PreviewMockFactory.createEpisodeListViewModel(
+                    scenario: .longList
+                )
+            )
+            .previewDisplayName("Long List")
+            
+            // Preview: Dark Mode
+            EpisodeListView(
+                viewModel: PreviewMockFactory.createEpisodeListViewModel(
+                    scenario: .success
+                )
+            )
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Dark Mode")
+        }
     }
 }
+#endif
