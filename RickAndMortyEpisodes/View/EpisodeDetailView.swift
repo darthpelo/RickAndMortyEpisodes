@@ -12,7 +12,7 @@ struct EpisodeDetailView: View {
             Text(viewModel.episode.name)
                 .font(.title)
             HStack {
-                Text(formattedDate(viewModel.episode.air_date))
+                Text(viewModel.episode.formattedAirDate)
                 Text(viewModel.episode.episode)
             }
             .font(.subheadline)
@@ -37,18 +37,6 @@ struct EpisodeDetailView: View {
         }
         .padding()
         .navigationTitle("Episode Details")
-    }
-    
-    /// Formats the air date string to dd/MM/yyyy
-    private func formattedDate(_ dateString: String) -> String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "MMMM d, yyyy"
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd/MM/yyyy"
-        if let date = inputFormatter.date(from: dateString) {
-            return outputFormatter.string(from: date)
-        }
-        return dateString
     }
 }
 

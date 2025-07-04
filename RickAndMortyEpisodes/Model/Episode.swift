@@ -9,3 +9,16 @@ struct Episode: Codable, Identifiable {
     let url: String
     let created: String
 } 
+
+extension Episode {
+    var formattedAirDate: String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "MMMM d, yyyy"
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "dd/MM/yyyy"
+        if let date = inputFormatter.date(from: air_date) {
+            return outputFormatter.string(from: date)
+        }
+        return air_date
+    }
+}

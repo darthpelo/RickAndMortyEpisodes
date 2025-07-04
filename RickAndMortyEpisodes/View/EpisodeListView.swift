@@ -29,7 +29,7 @@ struct EpisodeListView: View {
                                 VStack(alignment: .leading) {
                                     Text(episode.name)
                                         .font(.headline)
-                                    Text(formattedDate(episode.air_date))
+                                    Text(episode.formattedAirDate)
                                         .font(.subheadline)
                                     Text(episode.episode)
                                         .font(.caption)
@@ -53,18 +53,6 @@ struct EpisodeListView: View {
             .navigationTitle("Episodes")
             .task { await viewModel.fetchEpisodes() }
         }
-    }
-    
-    /// Formats the air date string to dd/MM/yyyy
-    private func formattedDate(_ dateString: String) -> String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "MMMM d, yyyy"
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd/MM/yyyy"
-        if let date = inputFormatter.date(from: dateString) {
-            return outputFormatter.string(from: date)
-        }
-        return dateString
     }
 }
 
