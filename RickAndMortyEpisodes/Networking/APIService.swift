@@ -1,6 +1,6 @@
 import Foundation
 
-final class APIService {
+final class APIService: EpisodeFetching {
     // Singleton instance for production use
     static let shared = APIService()
     // URLSession is injected for testability; defaults to .shared

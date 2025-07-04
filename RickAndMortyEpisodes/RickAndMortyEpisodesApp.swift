@@ -11,7 +11,7 @@ import SwiftUI
 struct RickAndMortyEpisodesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EpisodeListView(viewModel: EpisodeListViewModel(fetcher: APIService.shared, cache: CacheService.shared))
         }
     }
 }

@@ -31,7 +31,7 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             state = .success
             currentPage = 1
             totalPages = response.info.pages
-        } catch let error as URLError {
+        } catch _ as URLError {
             // Handle network error
             episodes = []
             state = .failure("Network error")

@@ -9,7 +9,7 @@ public protocol KeyValueStore {
 // UserDefaults conforms to KeyValueStore
 extension UserDefaults: KeyValueStore {}
 
-final class CacheService {
+final class CacheService: EpisodeCaching {
     // Singleton instance for production use
     static let shared = CacheService()
     // KeyValueStore is injected for testability; defaults to UserDefaults.standard
