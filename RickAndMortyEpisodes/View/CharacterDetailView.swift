@@ -3,6 +3,8 @@ import SwiftUI
 struct CharacterDetailView: View {
     @StateObject private var viewModel: CharacterDetailViewModel
     @State private var exportMessage: String?
+    @State private var shareURL: URL?
+    @State private var isShareSheetPresented = false
     
     init(character: Character) {
         _viewModel = StateObject(wrappedValue: CharacterDetailViewModel(character: character))
@@ -30,6 +32,8 @@ struct CharacterDetailView: View {
                     do {
                         let url = try viewModel.exportCharacterDetails()
                         exportMessage = "Exported to: \(url.lastPathComponent)"
+                        shareURL = url
+                        isShareSheetPresented = true
                     } catch {
                         exportMessage = "Export failed"
                     }
@@ -44,6 +48,11 @@ struct CharacterDetailView: View {
             .padding()
         }
         .navigationTitle("Character Details")
+        .sheet(isPresented: $isShareSheetPresented, onDismiss: { shareURL = nil }) {
+            if let url = shareURL {
+                ShareSheet(activityItems: [url])
+            }
+        }
     }
 }
 
