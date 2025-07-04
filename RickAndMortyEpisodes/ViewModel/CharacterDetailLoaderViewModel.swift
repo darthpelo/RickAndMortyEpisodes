@@ -1,7 +1,6 @@
 import Foundation
 
 /// State for the character detail loader
-@MainActor
 enum CharacterDetailLoaderState {
     case idle
     case loading
@@ -17,7 +16,7 @@ extension CharacterDetailLoaderState: Equatable {
         case (.failure(let l), .failure(let r)):
             return l == r
         case (.success, .success):
-            return true // Non confrontiamo il Character
+            return true // We don't compare the Character
         default:
             return false
         }
@@ -59,7 +58,7 @@ final class CharacterDetailLoaderViewModel: CharacterDetailLoaderViewModelProtoc
         }
     }
     
-    /// Resetta lo stato a idle
+    /// Resets the state to idle
     func reset() {
         state = .idle
     }

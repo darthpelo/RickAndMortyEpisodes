@@ -8,7 +8,7 @@ struct EpisodeListView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 switch viewModel.state {
                 case .idle, .loading:
