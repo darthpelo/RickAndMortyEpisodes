@@ -1,10 +1,3 @@
-//
-//  RickAndMortyEpisodesApp.swift
-//  RickAndMortyEpisodes
-//
-//  Created by Alessio Roberto on 03/07/2025.
-//
-
 import SwiftUI
 
 @main

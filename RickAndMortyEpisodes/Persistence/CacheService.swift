@@ -47,7 +47,7 @@ final class CacheService: EpisodeCaching {
         return try? JSONDecoder().decode([Character].self, from: data)
     }
     
-    // Cancella la cache degli episodi
+    // Clears the episodes cache
     func clearEpisodesCache() {
         store.set(nil, forKey: episodesKey)
     }

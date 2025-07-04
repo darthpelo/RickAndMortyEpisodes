@@ -60,17 +60,12 @@ struct EpisodeDetailView: View {
         .listStyle(InsetGroupedListStyle())
         .navigationTitle(viewModel.episode.name)
         .navigationBarTitleDisplayMode(.inline)
-        .background(
-            NavigationLink(
-                destination: characterDetailDestination,
-                isActive: Binding(
-                    get: { loader.state.isSuccess },
-                    set: { isActive in if !isActive { loader.reset() } }
-                ),
-                label: { EmptyView() }
-            )
-            .hidden()
-        )
+        .navigationDestination(isPresented: Binding(
+            get: { loader.state.isSuccess },
+            set: { isActive in if !isActive { loader.reset() } }
+        )) {
+            characterDetailDestination
+        }
         .overlay(
             Group {
                 if loader.state == .loading {
