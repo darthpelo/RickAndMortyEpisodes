@@ -40,7 +40,6 @@ struct EpisodeListView: View {
                                 }
                             }
                         }
-                        // End of list indicator
                         if viewModel.episodes.count > 0 {
                             Text("End of episode list")
                                 .font(.footnote)
@@ -98,11 +97,3 @@ struct EpisodeListView_Previews: PreviewProvider {
         return EpisodeListView(viewModel: mockViewModel)
     }
 }
-
-// MARK: - Placeholder for EpisodeDetailView (for preview only)
-struct EpisodeDetailView: View {
-    let episode: Episode
-    var body: some View {
-        Text("Episode Detail for \(episode.name)")
-    }
-} 
