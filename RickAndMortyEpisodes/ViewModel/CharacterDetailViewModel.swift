@@ -8,8 +8,8 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
     var status: String { character.status }
     var species: String { character.species }
     var originName: String { character.origin.name }
-    var episodeCount: Int { character.episode.count }
-    
+    var episodeCount: Int { character.episodes.count }
+
     init(character: Character) {
         self.character = character
     }
@@ -20,7 +20,7 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
             "status": character.status,
             "species": character.species,
             "origin": character.origin.name,
-            "episodeCount": character.episode.count
+            "episodeCount": character.episodes.count
         ]
         let data = try JSONSerialization.data(withJSONObject: exportDict, options: [.prettyPrinted])
         let fileName = "character_\(character.id)_details.json"

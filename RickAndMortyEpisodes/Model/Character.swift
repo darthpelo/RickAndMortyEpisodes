@@ -10,7 +10,7 @@ struct Character: Codable, Identifiable {
     let origin: Origin
     let location: Location
     let image: String
-    let episode: [String]
+    let episodes: [String]
     let url: String
     let created: String
 }

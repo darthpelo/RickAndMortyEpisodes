@@ -83,7 +83,7 @@ private class PreviewMockFetcher: EpisodeFetching {
             origin: Origin(name: "Earth", url: ""),
             location: Location(name: "Earth", url: ""),
             image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episode: ["url1", "url2"],
+            episodes: ["url1", "url2"],
             url: "",
             created: ""
         )
