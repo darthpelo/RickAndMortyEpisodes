@@ -21,6 +21,13 @@ struct EpisodeDetailView: View {
                 .foregroundColor(.secondary)
             }
             Section(header: Text("Characters").font(.headline)) {
+                if viewModel.isLoadingNames {
+                    HStack {
+                        Spacer()
+                        ProgressView("Loading names...")
+                        Spacer()
+                    }
+                }
                 if viewModel.characterIDs.isEmpty {
                     Text("No characters in this episode.")
                         .foregroundColor(.gray)
@@ -33,10 +40,19 @@ struct EpisodeDetailView: View {
                             HStack {
                                 Text("Character ID: \(id)")
                                 Spacer()
-                                Text("Name: N/A")
-                                    .foregroundColor(.secondary)
+                                if let name = viewModel.characterNames[id] {
+                                    Text("\(name)")
+                                        .foregroundColor(.secondary)
+                                } else if viewModel.isLoadingNames {
+                                    Text("Name: ...")
+                                        .foregroundColor(.secondary)
+                                } else {
+                                    Text("Name: N/A")
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
+                        .disabled(viewModel.isLoadingNames)
                     }
                 }
             }
@@ -76,6 +92,9 @@ struct EpisodeDetailView: View {
                 }
             }
         )
+        .task {
+            await viewModel.preloadCharacterNames()
+        }
     }
     
     @ViewBuilder

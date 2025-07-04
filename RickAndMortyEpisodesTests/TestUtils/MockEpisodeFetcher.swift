@@ -10,6 +10,7 @@ class MockEpisodeFetcher: EpisodeFetching {
     // For character fetching
     var characterResult: Result<Character, Error>?
     var lastRequestedCharacterID: Int?
+    var characterResultForID: ((Int) -> Result<Character, Error>)?
 
     func fetchEpisodes(page: Int) async throws -> EpisodeResponse {
         fetchEpisodesCalled = true
@@ -28,7 +29,14 @@ class MockEpisodeFetcher: EpisodeFetching {
     
     func fetchCharacter(id: Int) async throws -> Character {
         lastRequestedCharacterID = id
-        if let result = characterResult {
+        if let result = characterResultForID?(id) {
+            switch result {
+            case .success(let character):
+                return character
+            case .failure(let error):
+                throw error
+            }
+        } else if let result = characterResult {
             switch result {
             case .success(let character):
                 return character
@@ -36,7 +44,7 @@ class MockEpisodeFetcher: EpisodeFetching {
                 throw error
             }
         } else {
-            fatalError("MockEpisodeFetcher.characterResult not set")
+            fatalError("MockEpisodeFetcher.characterResultForID or characterResult not set")
         }
     }
 } 
