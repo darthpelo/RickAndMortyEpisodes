@@ -4,7 +4,7 @@ import XCTest
 final class EpisodeListViewModelTests: XCTestCase {
     var fetcher: MockEpisodeFetcher!
     var cache: MockEpisodeCache!
-    var viewModel: EpisodeListViewModel!
+    var sut: EpisodeListViewModel!
 
     override func setUp() {
         super.setUp()
@@ -15,7 +15,7 @@ final class EpisodeListViewModelTests: XCTestCase {
     override func tearDown() {
         fetcher = nil
         cache = nil
-        viewModel = nil
+        sut = nil
         super.tearDown()
     }
 
@@ -25,13 +25,13 @@ final class EpisodeListViewModelTests: XCTestCase {
         let episode = Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
         cache.storedEpisodes = [episode]
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
-        viewModel = EpisodeListViewModel(fetcher: fetcher, cache: cache)
+        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
-        await viewModel.fetchEpisodes()
+        await sut.fetchEpisodes()
         // Then: episodes from cache are shown immediately
-        XCTAssertEqual(viewModel.episodes.count, 1)
-        XCTAssertEqual(viewModel.episodes.first?.name, "Pilot")
-        XCTAssertEqual(viewModel.state, .success)
+        XCTAssertEqual(sut.episodes.count, 1)
+        XCTAssertEqual(sut.episodes.first?.name, "Pilot")
+        XCTAssertEqual(sut.state, .success)
     }
 
     // Test loading episodes from network when cache is empty
@@ -40,13 +40,13 @@ final class EpisodeListViewModelTests: XCTestCase {
         let episode = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         cache.storedEpisodes = nil
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
-        viewModel = EpisodeListViewModel(fetcher: fetcher, cache: cache)
+        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
-        await viewModel.fetchEpisodes()
+        await sut.fetchEpisodes()
         // Then: episodes from network are shown
-        XCTAssertEqual(viewModel.episodes.count, 1)
-        XCTAssertEqual(viewModel.episodes.first?.name, "Lawnmower Dog")
-        XCTAssertEqual(viewModel.state, .success)
+        XCTAssertEqual(sut.episodes.count, 1)
+        XCTAssertEqual(sut.episodes.first?.name, "Lawnmower Dog")
+        XCTAssertEqual(sut.state, .success)
     }
 
     // Test error handling when network fails
@@ -54,12 +54,12 @@ final class EpisodeListViewModelTests: XCTestCase {
         // Given: network returns error
         cache.storedEpisodes = nil
         fetcher.result = .failure(URLError(.notConnectedToInternet))
-        viewModel = EpisodeListViewModel(fetcher: fetcher, cache: cache)
+        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
-        await viewModel.fetchEpisodes()
+        await sut.fetchEpisodes()
         // Then: state is failure with error message
-        XCTAssertEqual(viewModel.state, .failure("Network error"))
-        XCTAssertTrue(viewModel.episodes.isEmpty)
+        XCTAssertEqual(sut.state, .failure("Network error"))
+        XCTAssertTrue(sut.episodes.isEmpty)
     }
 
     // Test pagination: loading next page
@@ -69,14 +69,14 @@ final class EpisodeListViewModelTests: XCTestCase {
         let episode2 = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         let pageInfo = PageInfo(count: 2, pages: 2, next: "next", prev: nil)
         fetcher.result = .success(EpisodeResponse(info: pageInfo, results: [episode1]))
-        viewModel = EpisodeListViewModel(fetcher: fetcher, cache: cache)
-        await viewModel.fetchEpisodes()
+        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
+        await sut.fetchEpisodes()
         // When: loading more episodes
         fetcher.result = .success(EpisodeResponse(info: pageInfo, results: [episode2]))
-        await viewModel.loadMoreIfNeeded(currentEpisode: episode1)
+        await sut.loadMoreIfNeeded(currentEpisode: episode1)
         // Then: next page is loaded and episodes are appended
-        XCTAssertEqual(viewModel.episodes.count, 2)
-        XCTAssertEqual(viewModel.episodes.last?.name, "Lawnmower Dog")
+        XCTAssertEqual(sut.episodes.count, 2)
+        XCTAssertEqual(sut.episodes.last?.name, "Lawnmower Dog")
     }
 
     // Test handling of corrupted data from network
@@ -85,11 +85,11 @@ final class EpisodeListViewModelTests: XCTestCase {
         cache.storedEpisodes = nil
         struct DummyError: Error {}
         fetcher.result = .failure(DummyError())
-        viewModel = EpisodeListViewModel(fetcher: fetcher, cache: cache)
+        sut = EpisodeListViewModel(fetcher: fetcher, cache: cache)
         // When: fetching episodes
-        await viewModel.fetchEpisodes()
+        await sut.fetchEpisodes()
         // Then: state is failure
-        XCTAssertEqual(viewModel.state, .failure("Decoding error"))
-        XCTAssertTrue(viewModel.episodes.isEmpty)
+        XCTAssertEqual(sut.state, .failure("Decoding error"))
+        XCTAssertTrue(sut.episodes.isEmpty)
     }
 } 
