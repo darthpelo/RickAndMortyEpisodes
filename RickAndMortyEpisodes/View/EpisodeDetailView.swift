@@ -108,7 +108,7 @@ struct EpisodeDetailView_Previews: PreviewProvider {
         let mockEpisode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1",

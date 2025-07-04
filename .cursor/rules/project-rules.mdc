@@ -1,0 +1,237 @@
+# Project Rules - Rick and Morty Episodes iOS App
+
+## Project Description
+
+This project is developed to meet the requirements of the assignment for an iOS Senior Developer position. The iOS app displays "Rick and Morty" episodes with additional details for each one, using the official Rick and Morty API.
+
+## Assignment Functional Requirements
+
+### 1. Episodes List
+- ✅ The app must display all episodes available from the API
+- ✅ Each episode in the list must show:
+  - Episode name
+  - Air date (dd/mm/yyyy format)
+  - Episode code
+- ✅ Show text indicating when the user has reached the end of the list
+
+### 2. Episode Details
+- ✅ Tapping on an episode must show all character IDs from that episode
+- ✅ Tapping on each character ID must show the character details page
+
+### 3. Character Details
+- ✅ Character image
+- ✅ Name
+- ✅ Status
+- ✅ Species
+- ✅ Origin location name
+- ✅ Total number of episodes the character appears in
+
+### 4. Export Functionality
+- ✅ Implement export functionality for character details
+- ✅ Save data (name, status, species, origin, episode count) to a local file
+- ✅ File openable by other apps (document reader, file explorer)
+
+### 5. Background Refresh
+- ✅ Implement background refresh of list content
+
+## Technical Requirements
+
+### Technology Stack
+- **Language**: Swift
+- **UI Framework**: SwiftUI
+- **Architecture**: MVVM
+- **API**: [Rick and Morty API](https://rickandmortyapi.com/documentation/#rest)
+
+### Bonus Features (Implemented)
+- ✅ **Persistence Mechanism**: Data saved locally with cache
+- ✅ **Pull to Refresh**: Refresh mechanism via drag gesture
+- ✅ **Timestamp**: Shows last time content was refreshed
+- ✅ **Unit Tests**: Complete unit tests
+- ✅ **UI Tests**: User interface tests
+
+## Development Principles
+
+### 1. SOLID Principles
+
+#### Single Responsibility Principle (SRP)
+- Each class has a single responsibility
+- `APIService` handles only network calls
+- `CacheService` handles only persistence
+- `ViewModel` handles only presentation logic
+
+#### Open/Closed Principle (OCP)
+- Classes are open for extension but closed for modification
+- Use of protocols for extensibility
+- Strategy pattern for service interchangeability
+
+#### Liskov Substitution Principle (LSP)
+- Concrete implementations can be substituted without altering behavior
+- Mock and real implementations are interchangeable
+
+#### Interface Segregation Principle (ISP)
+- Specific and targeted protocols
+- `EpisodeFetching`, `EpisodeCaching`, `CharacterFetching` separated
+
+#### Dependency Inversion Principle (DIP)
+- Dependencies on abstractions, not concrete implementations
+- Dependency injection through constructors
+- Use of protocols instead of concrete classes
+
+### 2. Test-Driven Development (TDD)
+
+#### Red-Green-Refactor Cycle
+- **Red**: Write failing tests before implementation
+- **Green**: Implement minimal code to make tests pass
+- **Refactor**: Improve code while keeping tests green
+
+#### Test Coverage
+- **Unit Tests**: Every ViewModel, Service and utility
+- **Integration Tests**: Component interactions
+- **UI Tests**: End-to-end user flows
+- **Mock Tests**: Validation of simulated behaviors
+
+#### Test Structure
+```swift
+// MARK: - Test Data
+// MARK: - Test Setup
+// MARK: - Test Teardown
+// MARK: - Test Cases
+```
+
+### 3. Documentation and Comments
+
+#### Documentation Rules
+- **All comments and documentation must be in ENGLISH**
+- **Code in English, comments in English**
+- **API documentation in Swift DocC format**
+
+#### Comment Structure
+```swift
+// MARK: - Public Properties
+// MARK: - Private Properties
+// MARK: - Initialization
+// MARK: - Public Methods
+// MARK: - Private Methods
+// MARK: - Protocols
+```
+
+#### Function Documentation
+```swift
+/// Brief description of the function in English
+/// - Parameters:
+///   - parameter1: Parameter description in English
+///   - parameter2: Parameter description in English
+/// - Returns: Return value description in English
+/// - Throws: Possible errors description in English
+```
+
+## Project Architecture
+
+### Directory Structure
+```
+RickAndMortyEpisodes/
+├── Model/              # Data models
+├── View/               # SwiftUI views
+├── ViewModel/          # ViewModels and presentation logic
+├── Networking/         # Network services
+├── Persistence/        # Cache and persistence services
+├── Supporting/         # Utilities and helpers
+└── Assets.xcassets/    # Graphic resources
+```
+
+### Architectural Patterns
+- **MVVM**: Model-View-ViewModel for separation of concerns
+- **Repository Pattern**: Data access abstraction
+- **Factory Pattern**: Complex object creation
+- **Observer Pattern**: Reactive UI updates
+
+## Code Quality
+
+### Coding Standards
+- **Naming**: Descriptive names in English
+- **Formatting**: Consistency in formatting
+- **Complexity**: Functions with maximum 15 lines of code
+- **Coupling**: Low coupling between components
+
+### Quality Metrics
+- **Code Coverage**: Minimum 80% for unit tests
+- **Cyclomatic Complexity**: Maximum 10 per function
+- **Duplication**: Zero code duplication
+- **Dependencies**: Minimal external dependencies
+
+## Error Handling
+
+### Error Handling Strategies
+- **Async/Await**: Modern asynchronous error handling
+- **Result Type**: Use of Result<Success, Error> where appropriate
+- **Custom Errors**: Domain-specific errors
+- **User Feedback**: User-friendly error messages
+
+### Error Types
+```swift
+enum APIError: Error {
+    case networkError(String)
+    case decodingError(String)
+    case serverError(Int)
+    case noDataError
+}
+```
+
+## Performance and Optimization
+
+### Optimization Strategies
+- **Lazy Loading**: Lazy data loading
+- **Image Caching**: Image caching
+- **Background Processing**: Background processing
+- **Memory Management**: Careful memory management
+
+### Performance Monitoring
+- **Launch Time**: App startup time
+- **Memory Usage**: Memory utilization
+- **Network Efficiency**: Network call efficiency
+- **UI Responsiveness**: User interface responsiveness
+
+## Security
+
+### Security Measures
+- **Network Security**: HTTPS communications
+- **Data Protection**: Sensitive data protection
+- **Input Validation**: User input validation
+- **Error Disclosure**: Limited error exposure
+
+## Maintainability
+
+### Maintainability Principles
+- **Modularity**: Code organized in modules
+- **Testability**: Easily testable code
+- **Documentation**: Complete and updated documentation
+- **Versioning**: Code version management
+
+### Continuous Refactoring
+- **Code Smells**: Identification and removal of code smells
+- **Technical Debt**: Technical debt management
+- **Continuous Integration**: Continuous integration
+- **Code Review**: Peer code review
+
+## Delivery and Deployment
+
+### Delivery Requirements
+- **Public Repository**: GitHub, GitLab or similar
+- **README**: Complete project documentation
+- **Build Instructions**: Compilation instructions
+- **Test Reports**: Automated test reports
+
+### Quality Checklist
+- [ ] All functional requirements implemented
+- [ ] SOLID principles applied
+- [ ] Test coverage > 80%
+- [ ] Complete English documentation
+- [ ] Code free of warnings and errors
+- [ ] Optimized performance
+- [ ] User-friendly UI/UX
+
+---
+
+*This document represents the rules and guiding principles for the development of the Rick and Morty Episodes app. It must be strictly followed throughout the entire development cycle.*
+alwaysApply: true
+---

@@ -23,7 +23,7 @@ final class EpisodeListViewModelTests: XCTestCase {
 
     func testEpisodesLoadedFromCache() async {
         // Given
-        let episode = Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
+        let episode = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
         cache.storedEpisodes = [episode]
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
         // When
@@ -36,7 +36,7 @@ final class EpisodeListViewModelTests: XCTestCase {
 
     func testEpisodesLoadedFromNetwork() async {
         // Given
-        let episode = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
+        let episode = Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         cache.storedEpisodes = nil
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
         // When
@@ -60,8 +60,8 @@ final class EpisodeListViewModelTests: XCTestCase {
 
     func testLoadMoreEpisodes() async {
         // Given
-        let episode1 = Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
-        let episode2 = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
+        let episode1 = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
+        let episode2 = Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         let pageInfo = PageInfo(count: 2, pages: 2, next: "next", prev: nil)
         fetcher.result = .success(EpisodeResponse(info: pageInfo, results: [episode1]))
         await sut.fetchEpisodes()
@@ -87,8 +87,8 @@ final class EpisodeListViewModelTests: XCTestCase {
 
     func testFetchEpisodesWithForceRefreshClearsCacheAndLoadsFromAPI() async {
         // Given
-        let cachedEpisode = Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
-        let apiEpisode = Episode(id: 2, name: "Lawnmower Dog", air_date: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
+        let cachedEpisode = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
+        let apiEpisode = Episode(id: 2, name: "Lawnmower Dog", airDate: "December 9, 2013", episode: "S01E02", characters: [], url: "", created: "")
         cache.storedEpisodes = [cachedEpisode]
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [apiEpisode]))
         // When:

@@ -20,7 +20,7 @@ final class CacheServiceTests: XCTestCase {
     // Test saving and loading episodes
     func testSaveAndLoadEpisodes() {
         // Given: an episode to save
-        let episode = Episode(id: 1, name: "Pilot", air_date: "December 2, 2013", episode: "S01E01", characters: [], url: "https://rickandmortyapi.com/api/episode/1", created: "2017-11-10T12:56:33.798Z")
+        let episode = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "https://rickandmortyapi.com/api/episode/1", created: "2017-11-10T12:56:33.798Z")
         // When: saving and then loading episodes
         sut.saveEpisodes([episode])
         let loaded = sut.loadEpisodes()

@@ -15,7 +15,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1",
@@ -35,7 +35,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 2,
             name: "Lawnmower Dog",
-            air_date: "December 9, 2013",
+            airDate: "December 9, 2013",
             episode: "S01E02",
             characters: [],
             url: "",
@@ -52,7 +52,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1",
@@ -84,7 +84,7 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         let episode = Episode(
             id: 1,
             name: "Pilot",
-            air_date: "December 2, 2013",
+            airDate: "December 2, 2013",
             episode: "S01E01",
             characters: [
                 "https://rickandmortyapi.com/api/character/1"
