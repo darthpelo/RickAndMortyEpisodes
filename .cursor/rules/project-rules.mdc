@@ -1,269 +1,189 @@
-# Project Rules - Rick and Morty Episodes iOS App
+# Rick and Morty Episodes App - Project Rules
 
-## Project Description
+## Project Overview
+This is a SwiftUI iOS application displaying Rick and Morty episodes using the official API. The project follows Test-Driven Development (TDD), SOLID principles, MVVM architecture, comprehensive unit testing, and **localization support** for Dutch and English.
 
-This project is developed to meet the requirements of the assignment for an iOS Senior Developer position. The iOS app displays "Rick and Morty" episodes with additional details for each one, using the official Rick and Morty API.
+## Three Fundamental Rules
+1. **English Documentation**: All code, comments, documentation, and README must be in English
+2. **Test-Driven Development (TDD)**: Write tests first, then implement functionality
+3. **SOLID Principles**: Apply all five SOLID principles consistently throughout the codebase
 
-## Assignment Functional Requirements
+## Implementation Status
 
-### 1. Episodes List
-- ✅ The app must display all episodes available from the API
-- ✅ Each episode in the list must show:
-  - Episode name
-  - Air date (dd/mm/yyyy format)
-  - Episode code
-- ✅ Show text indicating when the user has reached the end of the list
-
-### 2. Episode Details
-- ✅ Tapping on an episode must show all character IDs from that episode
-- ✅ Character IDs are displayed as numerical values only (no names loaded asynchronously)
-- ✅ Tapping on each character ID must show the character details page
-
-### 3. Character Details
-- ✅ Character image
-- ✅ Name
-- ✅ Status
-- ✅ Species
-- ✅ Origin location name
-- ✅ Total number of episodes the character appears in
-
-### 4. Export Functionality
-- ✅ Implement export functionality for character details
-- ✅ Save data (name, status, species, origin, episode count) to a local file
-- ✅ File openable by other apps (document reader, file explorer)
-
-### 5. Background Refresh
-- ✅ **True Background App Refresh**: Implemented using `BGTaskScheduler`
-- ✅ **Automatic system execution**: App refreshes content automatically while in background
-- ✅ **BGAppRefreshTask**: Uses iOS background task infrastructure
-- ✅ **Efficient background processing**: Respects system resources and battery life
-- ✅ **No dependency on app activation**: Works even when app is completely closed
-
-## Technical Requirements
-
-### Technology Stack
-- **Language**: Swift
-- **UI Framework**: SwiftUI
-- **Architecture**: MVVM
-- **Background Processing**: BGTaskScheduler (iOS 13+)
-- **API**: [Rick and Morty API](https://rickandmortyapi.com/documentation/#rest)
-
-### Background App Refresh Implementation
-- **BackgroundTaskManager**: Centralized background task management
-- **Task Identifier**: `com.rickandmorty.episodes.refresh`
-- **Registration**: Background task handlers registered during app launch
-- **Scheduling**: Automatic rescheduling after task completion
-- **Error Handling**: Graceful handling of background task failures
-- **Logging**: Comprehensive logging for debugging and monitoring
+### Core Requirements (All ✅ FULLY IMPLEMENTED)
+- ✅ **Load Rick and Morty episodes**: Official API integration with pagination
+- ✅ **Display episodes in list**: SwiftUI list with episode information  
+- ✅ **Show episode details**: Dedicated detail screen with character list
+- ✅ **Character details**: Modal presentation with character information
+- ✅ **Handle API failures**: Comprehensive error handling with retry mechanisms
+- ✅ **Loading and error states**: Visual feedback for all application states
+- ✅ **Background refresh**: True BGTaskScheduler-based background app refresh
+- ✅ **Pull to refresh**: Manual refresh via drag gesture
+- ✅ **Pagination**: Automatic loading of additional episodes
+- ✅ **Persistence**: Local data caching using UserDefaults
+- ✅ **Timestamp**: Last refresh time display
+- ✅ **Unit tests**: Comprehensive test coverage >80%
+- ✅ **SOLID principles**: Clean architecture implementation
+- ✅ **English documentation**: All documentation in English
+- ✅ **Localization**: Dutch + English language support
 
 ### Bonus Features (Implemented)
 - ✅ **Persistence Mechanism**: Data saved locally with cache
 - ✅ **Pull to Refresh**: Refresh mechanism via drag gesture
 - ✅ **Timestamp**: Shows last time content was refreshed
 - ✅ **Unit Tests**: Complete unit tests including background refresh
+- ✅ **Localization**: Professional Dutch + English translations
 
-**Note**: UI tests were not implemented due to time constraints. Focus was placed on comprehensive unit test coverage achieving >80% code coverage.
+**Note**: UI tests were not implemented due to time constraints, with focus placed on comprehensive unit test coverage and core functionality.
 
-## Development Principles
+### Character Details Implementation
+**Important**: In episode details, only character IDs are displayed (not character names loaded asynchronously). Character names are only shown when user taps on a character ID to view full character details.
 
-### 1. SOLID Principles
+## Architecture Components
 
-#### Single Responsibility Principle (SRP)
-- Each class has a single responsibility
-- `APIService` handles only network calls
-- `CacheService` handles only persistence
-- `ViewModel` handles only presentation logic
-- `BackgroundTaskManager` handles only background task management
+### MVVM Architecture
+- **Models**: Episode, Character, EpisodeResponse (Codable structs)
+- **Views**: EpisodeListView, EpisodeDetailView, CharacterDetailView (SwiftUI)
+- **ViewModels**: Protocol-based with dependency injection (ObservableObject)
+- **Services**: APIService (networking), CacheService (persistence)
 
-#### Open/Closed Principle (OCP)
-- Classes are open for extension but closed for modification
-- Use of protocols for extensibility
-- Strategy pattern for service interchangeability
+### Dependency Injection
+- ViewModels depend on protocol abstractions, not concrete implementations
+- `EpisodeFetcher`, `EpisodeCache`, `CharacterFetcher` protocols
+- Mock implementations for testing
 
-#### Liskov Substitution Principle (LSP)
-- Concrete implementations can be substituted without altering behavior
-- Mock and real implementations are interchangeable
+### Background App Refresh
+**True Background Refresh Implementation**:
+- **BGTaskScheduler**: iOS framework for background task management
+- **Task Identifier**: `com.rickandmorty.episodes.refresh`
+- **BackgroundTaskManager**: Centralized background task handling
+- **Automatic Rescheduling**: Self-managing background task lifecycle
+- **Optimized Background Execution**: `performBackgroundRefresh()` method for efficiency
 
-#### Interface Segregation Principle (ISP)
-- Specific and targeted protocols
-- `EpisodeFetching`, `EpisodeCaching`, `CharacterFetching` separated
-- `EpisodeListViewModelProtocol` includes `performBackgroundRefresh()`
+#### Background Refresh Requirements
+- Info.plist `UIBackgroundModes`: `["background-fetch"]`
+- Info.plist `BGTaskSchedulerPermittedIdentifiers`: `["com.rickandmorty.episodes.refresh"]`
+- App registration of background tasks during launch
+- BGTaskScheduler task handling and rescheduling
 
-#### Dependency Inversion Principle (DIP)
-- Dependencies on abstractions, not concrete implementations
-- Dependency injection through constructors
-- Use of protocols instead of concrete classes
+### Localization Architecture
 
-### 2. Test-Driven Development (TDD)
+**String Management**:
+- **Localizable.xcstrings**: String Catalog with Dutch (nl) + English (en) support
+- **LocalizationHelper.swift**: Centralized localized string access
+- **Dynamic Format Strings**: Support for parameterized text (e.g., "Status: %@")
+- **Complete Coverage**: All user-facing text fully localized
 
-#### Red-Green-Refactor Cycle
-- **Red**: Write failing tests before implementation
-- **Green**: Implement minimal code to make tests pass
-- **Refactor**: Improve code while keeping tests green
+**Supported Languages**:
+- **English (en)**: Primary development language
+- **Dutch (nl)**: Professional translations included
+
+**Implementation Details**:
+- String extraction from all SwiftUI views and ViewModels
+- Error messages localized in ViewModels
+- Format strings for dynamic content (character count, export messages)
+- Real-time language switching support
+
+## Service Layer Details
+
+### APIService
+- Official Rick and Morty API integration (`https://rickandmortyapi.com/api`)
+- Async/await networking pattern
+- Comprehensive error handling (network, parsing, HTTP status)
+- Endpoints: `/episode` (with pagination), `/character/{id}`
+
+### CacheService  
+- UserDefaults-based local persistence
+- Generic caching for episodes and characters
+- Data integrity validation and corruption recovery
+- Automatic cache refresh mechanisms
+
+### BackgroundTaskManager
+- BGTaskScheduler wrapper with comprehensive error handling
+- Automatic task registration and rescheduling
+- Background execution optimization
+- Integration with EpisodeListViewModel for data refresh
+
+## Testing Strategy
 
 #### Test Coverage
 - **Unit Tests**: Every ViewModel, Service and utility
 - **Background Refresh Tests**: Validation of `performBackgroundRefresh()` method
 - **Integration Tests**: Component interactions
 - **Mock Tests**: Validation of simulated behaviors
+- **Localization Tests**: String catalog and localized string validation
 
-#### Test Structure
-```swift
-// MARK: - Test Data
-// MARK: - Test Setup
-// MARK: - Test Teardown
-// MARK: - Test Cases
-```
+**Note**: UI tests were not implemented due to time constraints. Focus was placed on comprehensive unit test coverage achieving >80% code coverage.
 
-### 3. Documentation and Comments
+#### Mock Implementations
+- `MockEpisodeFetcher`: Simulated API responses with configurable delays
+- `MockEpisodeCache`: In-memory caching for testing
+- `MockCharacterFetcher`: Character loading simulation
+- `PreviewMockFactory`: SwiftUI preview support
 
-#### Documentation Rules
-- **All comments and documentation must be in ENGLISH**
-- **Code in English, comments in English**
-- **API documentation in Swift DocC format**
+## SOLID Principles Implementation
 
-#### Comment Structure
-```swift
-// MARK: - Public Properties
-// MARK: - Private Properties
-// MARK: - Initialization
-// MARK: - Public Methods
-// MARK: - Private Methods
-// MARK: - Protocols
-```
+### Single Responsibility Principle (SRP)
+- `APIService`: Only API communication
+- `CacheService`: Only data persistence  
+- `BackgroundTaskManager`: Only background task management
+- ViewModels: Only presentation logic for specific views
 
-#### Function Documentation
-```swift
-/// Brief description of the function in English
-/// - Parameters:
-///   - parameter1: Parameter description in English
-///   - parameter2: Parameter description in English
-/// - Returns: Return value description in English
-/// - Throws: Possible errors description in English
-```
+### Open/Closed Principle (OCP)
+- Protocol-based architecture enables extension without modification
+- New fetcher implementations can be added without changing existing code
+- Background task strategies can be extended via protocols
 
-## Project Architecture
+### Liskov Substitution Principle (LSP)
+- Mock implementations fully substitute real services
+- Protocol contracts maintained across all implementations
 
-### Directory Structure
-```
-RickAndMortyEpisodes/
-├── Model/              # Data models
-├── View/               # SwiftUI views
-├── ViewModel/          # ViewModels and presentation logic
-├── Networking/         # Network services
-├── Persistence/        # Cache and persistence services
-├── Supporting/         # Utilities, helpers, and BackgroundTaskManager
-└── Assets.xcassets/    # Graphic resources
-```
+### Interface Segregation Principle (ISP)
+- Small, focused protocols (EpisodeFetcher, EpisodeCache, CharacterFetcher)
+- ViewModels only depend on methods they actually use
 
-### Architectural Patterns
-- **MVVM**: Model-View-ViewModel for separation of concerns
-- **Repository Pattern**: Data access abstraction
-- **Factory Pattern**: Complex object creation
-- **Observer Pattern**: Reactive UI updates
-- **Background Task Management**: Centralized BGTaskScheduler handling
-
-## Code Quality
-
-### Coding Standards
-- **Naming**: Descriptive names in English
-- **Formatting**: Consistency in formatting
-- **Complexity**: Functions with maximum 15 lines of code
-- **Coupling**: Low coupling between components
-
-### Quality Metrics
-- **Code Coverage**: Minimum 80% for unit tests
-- **Cyclomatic Complexity**: Maximum 10 per function
-- **Duplication**: Zero code duplication
-- **Dependencies**: Minimal external dependencies
-
-## Error Handling
-
-### Error Handling Strategies
-- **Async/Await**: Modern asynchronous error handling
-- **Result Type**: Use of Result<Success, Error> where appropriate
-- **Custom Errors**: Domain-specific errors
-- **User Feedback**: User-friendly error messages
-- **Background Task Error Handling**: Graceful handling of background refresh failures
-
-### Error Types
-```swift
-enum APIError: Error {
-    case networkError(String)
-    case decodingError(String)
-    case serverError(Int)
-    case noDataError
-}
-```
-
-## Performance and Optimization
-
-### Optimization Strategies
-- **Lazy Loading**: Lazy data loading
-- **Image Caching**: Image caching
-- **Background Processing**: Efficient background task execution
-- **Memory Management**: Careful memory management
-- **Battery Efficiency**: Optimized background refresh to preserve battery life
-
-### Performance Monitoring
-- **Launch Time**: App startup time
-- **Memory Usage**: Memory utilization
-- **Network Efficiency**: Network call efficiency
-- **UI Responsiveness**: User interface responsiveness
-- **Background Task Efficiency**: Background refresh performance monitoring
-
-## Security
-
-### Security Measures
-- **Network Security**: HTTPS communications
-- **Data Protection**: Sensitive data protection
-- **Input Validation**: User input validation
-- **Error Disclosure**: Limited error exposure
-- **Background Task Security**: Secure background processing
-
-## Maintainability
-
-### Maintainability Principles
-- **Modularity**: Code organized in modules
-- **Testability**: Easily testable code
-- **Documentation**: Complete and updated documentation
-- **Versioning**: Code version management
-
-### Continuous Refactoring
-- **Code Smells**: Identification and removal of code smells
-- **Technical Debt**: Technical debt management
-- **Continuous Integration**: Continuous integration
-- **Code Review**: Peer code review
+### Dependency Inversion Principle (DIP)
+- ViewModels depend on abstractions (protocols), not concrete classes
+- High-level modules (ViewModels) don't depend on low-level modules (Services)
 
 ## Configuration Requirements
 
-### iOS Project Configuration
-- **Info.plist Configuration**: 
-  - Background modes: `background-fetch`
-  - Permitted background task scheduler identifiers: `com.rickandmorty.episodes.refresh`
-- **Capabilities**: Background App Refresh enabled in project settings
-- **Target iOS Version**: iOS 13.0+ (for BGTaskScheduler support)
+### Info.plist Configuration
+```xml
+<key>UIBackgroundModes</key>
+<array>
+    <string>background-fetch</string>
+</array>
+<key>BGTaskSchedulerPermittedIdentifiers</key>
+<array>
+    <string>com.rickandmorty.episodes.refresh</string>
+</array>
+```
 
-## Delivery and Deployment
+### Project Configuration
+- iOS Deployment Target: 18.0+
+- Swift Version: 5.9+
+- Xcode Version: 15.0+
+- Localization Development Region: English
+- Supported Localization Regions: English, Dutch
 
-### Delivery Requirements
-- **Public Repository**: GitHub, GitLab or similar
-- **README**: Complete project documentation
-- **Build Instructions**: Compilation instructions
-- **Test Reports**: Automated test reports
-- **Background Refresh Setup**: Instructions for configuring background refresh
+## Quality Standards
+- All code documented with English comments
+- Comprehensive unit test coverage (>80%)
+- Error handling for all failure scenarios
+- Clean architecture with separation of concerns
+- Performance optimization with lazy loading and caching
+- Professional localization for Dutch market
+- Background refresh respecting iOS system resources
 
-### Quality Checklist
-- [x] All functional requirements implemented
-- [x] SOLID principles applied
-- [x] Test coverage > 80%
-- [x] Complete English documentation
-- [x] Code free of warnings and errors
-- [x] Optimized performance
-- [x] User-friendly UI/UX
-- [x] True background app refresh with BGTaskScheduler
-- [x] Character IDs displayed without name loading
-- [x] Background task testing completed
+## Localization Features (✅ FULLY IMPLEMENTED)
+- ✅ **Dutch + English Support**: Complete String Catalog (.xcstrings) implementation
+- ✅ **Professional Translations**: All user-facing text properly localized
+- ✅ **Date Localization**: Automatic date formatting following system locale
+- ✅ **Error Message Localization**: Localized error states throughout app
+- ✅ **Dynamic Language Switching**: Real-time language switching based on system settings
+
+**Technical Implementation**: Centralized LocalizedString enum with formatters that respect system locale for dates and proper localization key management.
 
 ---
 

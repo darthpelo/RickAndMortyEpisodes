@@ -54,7 +54,7 @@ final class CharacterDetailLoaderViewModel: CharacterDetailLoaderViewModelProtoc
             let character = try await fetcher.fetchCharacter(id: id)
             state = .success(character)
         } catch {
-            state = .failure("Failed to load character")
+            state = .failure(LocalizedString.failedToLoadCharacter)
         }
     }
     

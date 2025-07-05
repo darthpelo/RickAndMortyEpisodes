@@ -24,18 +24,18 @@ struct CharacterDetailView: View {
                 }
                 Text(viewModel.name)
                     .font(.title)
-                Text("Status: \(viewModel.status)")
-                Text("Species: \(viewModel.species)")
-                Text("Origin: \(viewModel.originName)")
-                Text("Episodes: \(viewModel.episodeCount)")
-                Button("Export JSON") {
+                Text(LocalizedString.statusFormat(viewModel.status))
+                Text(LocalizedString.speciesFormat(viewModel.species))
+                Text(LocalizedString.originFormat(viewModel.originName))
+                Text(LocalizedString.episodeCountFormat(viewModel.episodeCount))
+                Button(LocalizedString.exportJsonButton) {
                     do {
                         let url = try viewModel.exportCharacterDetails()
-                        exportMessage = "Exported to: \(url.lastPathComponent)"
+                        exportMessage = LocalizedString.exportedToFormat(url.lastPathComponent)
                         shareURL = url
                         isShareSheetPresented = true
                     } catch {
-                        exportMessage = "Export failed"
+                        exportMessage = LocalizedString.exportFailed
                     }
                 }
                 if let message = exportMessage {
@@ -47,7 +47,7 @@ struct CharacterDetailView: View {
             }
             .padding()
         }
-        .navigationTitle("Character Details")
+        .navigationTitle(LocalizedString.characterDetailsTitle)
         .sheet(isPresented: $isShareSheetPresented, onDismiss: { shareURL = nil }) {
             if let url = shareURL {
                 ShareSheet(activityItems: [url])

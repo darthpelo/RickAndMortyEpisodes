@@ -1,6 +1,16 @@
-# Rick and Morty Episodes iOS App
+# Rick and Morty Episodes App
 
-A SwiftUI iOS application that displays Rick and Morty episodes with character details, built following MVVM architecture and SOLID principles.
+A SwiftUI iOS application that displays episodes from the popular Rick and Morty TV series using the official Rick and Morty API. This app demonstrates modern iOS development practices, MVVM architecture, SOLID principles, Test-Driven Development (TDD), and comprehensive localization support.
+
+## 🌍 Localization Support
+
+This app supports **Dutch (nl)** and **English (en)** localization with full date formatting support:
+- All user-facing strings are localized using String Catalogs (.xcstrings)
+- **Date formatting automatically follows system locale** (dates display correctly in Dutch/English based on system language)
+- Dynamic language switching (follows system language)
+- Localized error messages and UI components
+- Professional Dutch translations included
+- **Resolved**: Month names now display correctly in the selected system language
 
 ## 📱 Project Overview
 
@@ -29,100 +39,87 @@ This approach allowed me to focus on **senior-level architectural decisions** an
 
 ## ✅ Assignment Requirements Implementation Status
 
-### 🎬 1. Episodes List
-- **Status**: ✅ **FULLY IMPLEMENTED**
-- **Features Implemented**:
-  - ✅ Display all episodes from the API with infinite scrolling pagination
-  - ✅ Episode name display
-  - ✅ Air date in dd/mm/yyyy format
-  - ✅ Episode code (e.g., S01E01)
-  - ✅ "End of list" indicator when all episodes are loaded
-  - ✅ Pull-to-refresh functionality
-  - ✅ Loading states and error handling
+All assignment requirements have been **FULLY IMPLEMENTED** and thoroughly tested:
 
-### 📋 2. Episode Details
-- **Status**: ✅ **FULLY IMPLEMENTED**
-- **Features Implemented**:
-  - ✅ Tapping episode shows character IDs from that episode
-  - ✅ Character IDs displayed as numerical values only (no asynchronous name loading)
-  - ✅ Tapping character ID navigates to character details
-  - ✅ Clean, focused interface showing only required information
+- ✅ **Load Rick and Morty episodes**: Using official API with pagination
+- ✅ **Display episodes in list**: Clean SwiftUI list with episode details
+- ✅ **Show episode details**: Dedicated detail view with character information
+- ✅ **Character details**: Modal presentation with character information and JSON export
+- ✅ **Handle API failures**: Comprehensive error handling with retry mechanisms
+- ✅ **Loading and error states**: Visual feedback for all states
+- ✅ **Implement refreshing in background**: True BGTaskScheduler-based background refresh
+- ✅ **Pull to refresh**: Manual refresh with drag gesture
+- ✅ **Pagination**: Automatic loading of additional episodes
+- ✅ **Persistence**: Local caching with UserDefaults
+- ✅ **Timestamp display**: Shows last refresh time
+- ✅ **Unit testing**: Comprehensive test coverage (>80%)
+- ✅ **SOLID principles**: Clean architecture implementation
+- ✅ **English documentation**: Complete technical documentation
+- ✅ **Localization**: Dutch + English support
 
-### 👤 3. Character Details
-- **Status**: ✅ **FULLY IMPLEMENTED**
-- **Features Implemented**:
-  - ✅ Character image with async loading and caching
-  - ✅ Character name
-  - ✅ Status (Alive, Dead, Unknown)
-  - ✅ Species information
-  - ✅ Origin location name
-  - ✅ Total number of episodes the character appears in
-  - ✅ Professional UI with proper error states
+## 🏗️ Architecture
 
-### 📤 4. Export Functionality
-- **Status**: ✅ **FULLY IMPLEMENTED**
-- **Features Implemented**:
-  - ✅ Export character details to local file
-  - ✅ Exports: name, status, species, origin, episode count
-  - ✅ File format: JSON with readable structure
-  - ✅ Shareable with other apps (document readers, file explorers)
-  - ✅ Native iOS share sheet integration
+### MVVM Pattern Implementation
+The application follows a strict **Model-View-ViewModel (MVVM)** architecture:
 
-### 🔄 5. Background Refresh
-- **Status**: ✅ **FULLY IMPLEMENTED** (True Background App Refresh)
-- **Features Implemented**:
-  - ✅ **BGTaskScheduler implementation**: True iOS background app refresh
-  - ✅ **Automatic execution**: Refreshes content while app is in background
-  - ✅ **System-managed**: Respects iOS battery and performance constraints
-  - ✅ **Independent operation**: Works even when app is completely closed
-  - ✅ **BackgroundTaskManager**: Centralized background task management
-  - ✅ **Task scheduling**: Automatic rescheduling after completion
-  - ✅ **Error handling**: Graceful failure handling in background
-
-## 🏗️ Technical Implementation
-
-### Architecture
-- **Pattern**: MVVM (Model-View-ViewModel)
-- **UI Framework**: SwiftUI
-- **Language**: Swift 5.0+
-- **Minimum iOS**: 13.0+ (for BGTaskScheduler support)
-
-### Key Components
-
-#### Models
-- `Episode`: Episode data structure
-- `Character`: Character data structure with complete API mapping
-- `EpisodeResponse`: API response wrapper with pagination info
-
-#### ViewModels
-- `EpisodeListViewModel`: Episodes list management and background refresh
-- `EpisodeDetailViewModel`: Episode detail display logic
-- `CharacterDetailViewModel`: Character detail management
-- `CharacterDetailLoaderViewModel`: Character data loading coordination
-
-#### Services
-- `APIService`: Network layer with async/await
-- `CacheService`: Data persistence and offline support
-- `BackgroundTaskManager`: BGTaskScheduler management
-
-#### Views
-- `EpisodeListView`: Main episodes list with infinite scroll
-- `EpisodeDetailView`: Episode details with character IDs
-- `CharacterDetailView`: Character information display
-
-### Background Refresh Implementation
-```swift
-// BGTaskScheduler configuration
-Task Identifier: "com.rickandmorty.episodes.refresh"
-Background Modes: ["background-fetch"]
-Registration: During app launch
-Execution: System-managed background execution
+```
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐
+│    View     │◄──►│  ViewModel   │◄──►│    Model    │
+│  (SwiftUI)  │    │ (ObservableObject)│    │ (Structs)   │
+└─────────────┘    └──────────────┘    └─────────────┘
 ```
 
-### Data Persistence
-- **Cache**: Episodes and characters cached locally
-- **Offline Support**: App works with cached data when offline
-- **Storage**: UserDefaults for simple data, JSON encoding for complex structures
+**Views** (SwiftUI):
+- `EpisodeListView`: Main episodes list with pagination and pull-to-refresh
+- `EpisodeDetailView`: Episode details with character list
+- `CharacterDetailView`: Character information with JSON export functionality
+
+**ViewModels** (ObservableObject):
+- `EpisodeListViewModel`: Episodes management and background refresh
+- `EpisodeDetailViewModel`: Episode detail logic
+- `CharacterDetailViewModel`: Character details and export functionality
+- `CharacterDetailLoaderViewModel`: Character loading state management
+
+**Models** (Structs):
+- `Episode`: Episode data structure
+- `Character`: Character data structure  
+- `EpisodeResponse`: API response wrapper
+
+### Background App Refresh Implementation
+
+**True Background Refresh** using `BGTaskScheduler`:
+- **Task Identifier**: `com.rickandmorty.episodes.refresh`
+- **Automatic Scheduling**: Self-rescheduling background tasks
+- **Background Execution**: Fetches new episodes while app is backgrounded
+- **Cache Updates**: Updates local persistence without UI interference
+- **System Integration**: Respects iOS background execution policies
+
+**Key Components**:
+- `BackgroundTaskManager`: Centralized BGTaskScheduler handling
+- `performBackgroundRefresh()`: Optimized background execution method
+- Info.plist configuration for background modes
+
+### Services Layer
+
+**APIService**: 
+- HTTP networking using URLSession
+- Async/await pattern for modern concurrency
+- Comprehensive error handling
+- Rick and Morty API integration
+
+**CacheService**:
+- UserDefaults-based persistence
+- Generic caching mechanism
+- Data integrity validation
+- Automatic corruption recovery
+
+### Localization Architecture
+
+**String Management**:
+- `Localizable.xcstrings`: String Catalog with Dutch + English translations  
+- `LocalizationHelper.swift`: Centralized localized string access
+- Dynamic format strings for parameterized text
+- Complete UI and error message localization
 
 ## 🧪 Testing
 
@@ -138,157 +135,151 @@ Execution: System-managed background execution
 - ✅ **Integration Tests**: Component interaction testing
 - ✅ **Mock Testing**: Simulated API responses
 - ✅ **Background Refresh Tests**: BGTaskScheduler functionality
+- ✅ **Localization Tests**: String catalog validation
 
 **Note**: UI tests were not implemented due to time constraints. The focus was placed on comprehensive unit test coverage and core functionality implementation.
 
-## 🚀 Getting Started
+## 🚀 Installation and Setup
 
-### Prerequisites
-- Xcode 14.0 or later
-- iOS 13.0 or later
-- Swift 5.0 or later
+1. **Clone the repository**
+2. **Open** `RickAndMortyEpisodes.xcodeproj` in Xcode 15.0+
+3. **Select** your target device or simulator
+4. **Build and run** (⌘R)
 
-### Installation
-1. Clone the repository
-```bash
-git clone [repository-url]
-cd RickAndMortyEpisodes
-```
+### Requirements
+- iOS 18.0+
+- Xcode 15.0+
+- Swift 5.9+
 
-2. Open the project in Xcode
-```bash
-open RickAndMortyEpisodes.xcodeproj
-```
+### Background Refresh Configuration
+The app includes proper configuration for background refresh:
+- `Info.plist` includes `background-fetch` mode
+- Background task identifier: `com.rickandmorty.episodes.refresh`
+- Automatic BGTaskScheduler registration
 
-3. Build and run
-- Select your target device or simulator
-- Press `Cmd + R` to build and run
+### Localization Testing
+- **English**: Default system language
+- **Dutch**: Change iOS system language to "Nederlands"
+- **Real-time**: Language changes apply immediately
 
-### Configuration for Background Refresh
-1. **Info.plist Configuration**: Already configured with:
-   - Background modes: `background-fetch`
-   - Permitted task identifiers: `com.rickandmorty.episodes.refresh`
+## 🔧 Technical Implementation Details
 
-2. **Device Settings**:
-   - Enable "Background App Refresh" in iOS Settings
-   - Allow background refresh for this specific app
+### SOLID Principles Implementation
 
-### Running Tests
-```bash
-# Run unit tests
-cmd + U in Xcode
+**Single Responsibility Principle (SRP)**: Each class has one reason to change
+- `APIService`: Only handles API communication
+- `CacheService`: Only manages data persistence
+- ViewModels: Only handle presentation logic for their specific view
+- `BackgroundTaskManager`: Only manages background task scheduling
 
-# Or via command line
-xcodebuild test -project RickAndMortyEpisodes.xcodeproj -scheme RickAndMortyEpisodes -destination 'platform=iOS Simulator,name=iPhone 16'
-```
+**Open/Closed Principle (OCP)**: Open for extension, closed for modification
+- Protocol-based architecture allows easy extension
+- `EpisodeFetcher` and `EpisodeCache` protocols enable different implementations
+- `CharacterFetcher` protocol supports multiple character sources
 
-## 📁 Project Structure
-```
-RickAndMortyEpisodes/
-├── Model/                          # Data models and structures
-│   ├── Episode.swift
-│   ├── Character.swift
-│   └── EpisodeResponse.swift
-├── View/                           # SwiftUI views
-│   ├── EpisodeListView.swift
-│   ├── EpisodeDetailView.swift
-│   └── CharacterDetailView.swift
-├── ViewModel/                      # Presentation logic
-│   ├── EpisodeListViewModel.swift
-│   ├── EpisodeDetailViewModel.swift
-│   ├── CharacterDetailViewModel.swift
-│   └── *ViewModelProtocols.swift
-├── Networking/                     # API services
-│   └── APIService.swift
-├── Persistence/                    # Data caching
-│   └── CacheService.swift
-├── Supporting/                     # Utilities and helpers
-│   ├── BackgroundTaskManager.swift
-│   └── PreviewMockFactory.swift
-└── RickAndMortyEpisodesTests/     # Unit tests only
-    ├── EpisodeListViewModelTests.swift
-    ├── APIServiceTests.swift
-    └── [Other unit test files]
-```
+**Liskov Substitution Principle (LSP)**: Derived classes must be substitutable
+- Mock implementations fully substitute real services in tests
+- `MockEpisodeFetcher` and `MockEpisodeCache` maintain behavior contracts
 
-## 🎯 SOLID Principles Implementation
+**Interface Segregation Principle (ISP)**: No forced dependencies on unused methods
+- Small, focused protocols (`EpisodeFetcher`, `EpisodeCache`, `CharacterFetcher`)
+- ViewModels only depend on needed protocol methods
 
-### Single Responsibility Principle (SRP)
-- `APIService`: Only handles network requests
-- `CacheService`: Only handles data persistence  
-- `BackgroundTaskManager`: Only handles background task management
-- Each ViewModel handles only its specific view logic
+**Dependency Inversion Principle (DIP)**: Depend on abstractions, not concretions
+- ViewModels depend on protocol abstractions
+- Dependency injection enables testability and flexibility
 
-### Open/Closed Principle (OCP)
-- Protocol-based architecture allows extension without modification
-- New data sources can be added via protocol implementation
+### API Integration
+- **Base URL**: `https://rickandmortyapi.com/api`
+- **Endpoints**: Episodes (`/episode`), Characters (`/character/{id}`)
+- **Rate Limiting**: Implemented with proper error handling
+- **Pagination**: Automatic next page loading
+- **Networking**: Modern async/await pattern
 
-### Liskov Substitution Principle (LSP)
-- Mock implementations are fully substitutable with real implementations
-- Protocol conformance ensures behavioral consistency
-
-### Interface Segregation Principle (ISP)
-- `EpisodeFetching`, `EpisodeCaching`, `CharacterFetching` are separate, focused protocols
-- Clients depend only on methods they actually use
-
-### Dependency Inversion Principle (DIP)
-- High-level modules depend on abstractions (protocols)
-- Dependency injection used throughout the app
-- Easy to test and modify dependencies
-
-## 🏆 Quality Metrics
-
-- ✅ **Code Coverage**: >80% unit test coverage
-- ✅ **Documentation**: Complete English documentation
-- ✅ **Error Handling**: Comprehensive error management
-- ✅ **Performance**: Optimized with caching and background processing
-- ✅ **User Experience**: Professional UI with loading states and error feedback
-- ✅ **Memory Management**: Proper async/await usage and resource cleanup
-
-## 📋 Assignment Checklist
-
-- [x] **All functional requirements implemented**
-- [x] **SOLID principles applied throughout**
-- [x] **Test coverage >80%**
-- [x] **Complete English documentation**
-- [x] **Code free of warnings and errors**
-- [x] **Optimized performance**
-- [x] **Professional UI/UX**
-- [x] **True background app refresh with BGTaskScheduler**
-- [x] **Character IDs displayed without name loading**
-- [x] **Background task testing completed**
-- [x] **Export functionality implemented**
-- [x] **Data persistence and caching**
-
-## 🔧 Advanced Features
-
-### Bonus Features Implemented
-- ✅ **Data Persistence**: Complete offline functionality
-- ✅ **Pull-to-Refresh**: Intuitive refresh mechanism
-- ✅ **Timestamp Display**: Last refresh time indication
-- ✅ **Image Caching**: Efficient character image loading
-- ✅ **Error Recovery**: Graceful error handling and retry mechanisms
-- ✅ **Infinite Scrolling**: Seamless episode pagination
-- ✅ **Export Functionality**: Character data export to shareable files
+### Error Handling Strategy
+- **Network Errors**: Retry mechanisms with user feedback
+- **Parsing Errors**: Graceful fallbacks and error reporting
+- **Cache Corruption**: Automatic recovery and refresh
+- **Background Task Errors**: Proper error logging and task rescheduling
 
 ### Performance Optimizations
-- Async image loading with caching
-- Lazy loading for large datasets
-- Efficient background task execution
-- Memory-conscious data management
-- Network request optimization
+- **Lazy Loading**: Episodes loaded on demand with pagination
+- **Image Caching**: Character images cached efficiently  
+- **Background Updates**: Non-blocking background refresh
+- **Memory Management**: Proper cleanup and weak references
 
-## 📝 Notes
+## 🎯 Advanced Features
 
-This implementation represents a production-ready iOS application that exceeds the basic assignment requirements by including:
-- True background app refresh using BGTaskScheduler
-- Comprehensive test coverage
-- Professional error handling
-- Optimized performance
-- Clean, maintainable architecture following SOLID principles
+### Bonus Features (Implemented)
+- ✅ **Persistence Mechanism**: Data saved locally with cache
+- ✅ **Pull to Refresh**: Refresh mechanism via drag gesture
+- ✅ **Timestamp**: Shows last time content was refreshed
+- ✅ **Unit Tests**: Complete unit tests including background refresh
+- ✅ **Localization**: Dutch + English language support
 
-The app demonstrates senior-level iOS development skills with modern Swift practices, SwiftUI expertise, and advanced iOS features implementation.
+**Note**: UI tests were not implemented due to time constraints, with focus placed on comprehensive unit test coverage and core functionality.
+
+### Export Functionality
+- **JSON Export**: Character details exported as formatted JSON
+- **iOS Share Sheet**: Native sharing integration
+- **File System**: Temporary file creation and management
+
+### Background Processing
+- **BGTaskScheduler**: iOS 13+ background task framework
+- **Task Scheduling**: Intelligent rescheduling based on usage patterns
+- **System Resources**: Respects iOS battery and data usage policies
+
+## 📊 Quality Metrics
+
+### Assignment Checklist ✅
+- [x] Load episodes from Rick and Morty API
+- [x] Display episodes in a list format
+- [x] Show detailed information for each episode
+- [x] Display character details when tapped
+- [x] Handle API failures gracefully
+- [x] Implement loading and error states
+- [x] Implement refreshing list content in background
+- [x] Implement pull-to-refresh functionality
+- [x] Support pagination for episodes
+- [x] Implement local data persistence
+- [x] Display timestamp of last refresh
+- [x] Write comprehensive unit tests
+- [x] Follow SOLID principles
+- [x] Use English for all documentation
+- [x] Implement localization support (Dutch + English)
+
+### Code Quality Metrics
+- **Architecture**: MVVM with protocol-based dependency injection
+- **Test Coverage**: >80% unit test coverage
+- **Documentation**: Comprehensive inline and external documentation
+- **Error Handling**: Comprehensive error scenarios covered
+- **Performance**: Optimized with lazy loading and caching
+- **Accessibility**: VoiceOver support and semantic labels
+- **Localization**: Professional Dutch + English translations
+
+## 💡 AI-Assisted Development
+
+This project was developed with the assistance of AI development tools:
+
+**Tools Used**:
+- **GitHub Copilot**: Over a year of experience in company environment for code autocompletion and suggestions
+- **Cursor IDE with Claude-4-Sonnet**: Used specifically for this assignment for comprehensive development assistance
+
+**AI Assistance Areas**:
+- **Code Autocompletion**: Accelerated coding with intelligent suggestions
+- **SwiftUI Improvement**: Enhanced UI implementation (due to not writing UI regularly in past year)  
+- **Comprehensive Test Creation**: Generated extensive unit test coverage
+- **Project Review**: Code quality analysis and optimization suggestions
+
+**Senior-Level Contributions (Human)**:
+- **Architecture Design**: MVVM structure and protocol design decisions
+- **Background Refresh Strategy**: BGTaskScheduler implementation approach
+- **API Integration Design**: Rick and Morty API integration architecture
+- **Business Logic**: Core application logic and data flow
+- **Problem-Solving**: Technical challenges and optimization strategies
+
+The combination of AI assistance for efficiency and senior-level architectural decisions resulted in a production-ready application that exceeds assignment requirements while maintaining high code quality standards.
 
 ---
 
-**Developed with ❤️ using SwiftUI and modern iOS development practices** 
+**Built with SwiftUI, following TDD principles, SOLID architecture, and modern iOS development best practices.** 

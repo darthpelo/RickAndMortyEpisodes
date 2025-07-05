@@ -12,12 +12,12 @@ struct EpisodeListView: View {
             Group {
                 switch viewModel.state {
                 case .idle, .loading:
-                    ProgressView("Loading episodes...")
+                    ProgressView(LocalizedString.loadingEpisodes)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 case .failure(let message):
                     VStack {
-                        Text("Error: \(message)")
-                        Button("Retry") {
+                        Text(LocalizedString.errorFormat(message))
+                        Button(LocalizedString.retryButton) {
                             Task { await viewModel.fetchEpisodes() }
                         }
                     }
@@ -40,21 +40,21 @@ struct EpisodeListView: View {
                                 }
                             }
                         }
-                        if viewModel.episodes.count > 0 {
-                            Text("End of episode list")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
+                                        if viewModel.episodes.count > 0 {
+                    Text(LocalizedString.endOfEpisodeList)
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
                     }
                     .listStyle(.plain)
                     .refreshable {
                         await viewModel.fetchEpisodes(forceRefresh: true)
                     }
-                }
-            }
-            .navigationTitle("Episodes")
-            .task { await viewModel.fetchEpisodes() }
+                            }
+        }
+        .navigationTitle(LocalizedString.episodesTitle)
+        .task { await viewModel.fetchEpisodes() }
         }
     }
 }

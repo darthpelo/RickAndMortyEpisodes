@@ -20,9 +20,9 @@ struct EpisodeDetailView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             }
-            Section(header: Text("Characters").font(.headline)) {
+            Section(header: Text(LocalizedString.charactersSection).font(.headline)) {
                 if viewModel.characterIDs.isEmpty {
-                    Text("No characters in this episode.")
+                    Text(LocalizedString.noCharactersInEpisode)
                         .foregroundColor(.gray)
                 } else {
                     ForEach(viewModel.characterIDs, id: \.self) { id in
@@ -31,7 +31,7 @@ struct EpisodeDetailView: View {
                             Task { await loader.loadCharacter(id: id) }
                         }) {
                             HStack {
-                                Text("Character ID: \(id)")
+                                Text(LocalizedString.characterIdFormat(id))
                                 Spacer()
                             }
                         }
@@ -53,7 +53,7 @@ struct EpisodeDetailView: View {
                 if loader.state == .loading {
                     Color.black.opacity(0.2)
                         .ignoresSafeArea()
-                    ProgressView("Loading character...")
+                    ProgressView(LocalizedString.loadingCharacter)
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
                         .shadow(radius: 10)
@@ -61,7 +61,7 @@ struct EpisodeDetailView: View {
                     VStack {
                         Text(message)
                             .foregroundColor(.red)
-                        Button("Dismiss") { loader.reset() }
+                        Button(LocalizedString.dismissButton) { loader.reset() }
                     }
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))

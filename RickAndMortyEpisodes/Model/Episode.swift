@@ -17,13 +17,6 @@ struct Episode: Codable, Identifiable {
 
 extension Episode {
     var formattedAirDate: String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "MMMM d, yyyy"
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd/MM/yyyy"
-        if let date = inputFormatter.date(from: airDate) {
-            return outputFormatter.string(from: date)
-        }
-        return airDate
+        return LocalizedString.formatAirDate(airDate)
     }
 }

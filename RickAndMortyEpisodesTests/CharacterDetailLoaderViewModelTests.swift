@@ -54,7 +54,7 @@ final class CharacterDetailLoaderViewModelTests: XCTestCase {
         await sut.loadCharacter(id: 1)
         // Then
         if case .failure(let message) = sut.state {
-            XCTAssertEqual(message, "Failed to load character")
+            XCTAssertEqual(message, LocalizedString.failedToLoadCharacter)
         } else {
             XCTFail("Expected failure state")
         }
