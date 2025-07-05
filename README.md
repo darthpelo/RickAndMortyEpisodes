@@ -139,6 +139,8 @@ Execution: System-managed background execution
 - ✅ **Mock Testing**: Simulated API responses
 - ✅ **Background Refresh Tests**: BGTaskScheduler functionality
 
+**Note**: UI tests were not implemented due to time constraints. The focus was placed on comprehensive unit test coverage and core functionality implementation.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -203,10 +205,10 @@ RickAndMortyEpisodes/
 ├── Supporting/                     # Utilities and helpers
 │   ├── BackgroundTaskManager.swift
 │   └── PreviewMockFactory.swift
-└── Tests/                         # Unit and integration tests
+└── RickAndMortyEpisodesTests/     # Unit tests only
     ├── EpisodeListViewModelTests.swift
     ├── APIServiceTests.swift
-    └── [Other test files]
+    └── [Other unit test files]
 ```
 
 ## 🎯 SOLID Principles Implementation
