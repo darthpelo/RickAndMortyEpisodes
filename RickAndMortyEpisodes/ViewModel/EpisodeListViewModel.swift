@@ -10,12 +10,12 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     private var totalPages: Int = 1
     private var isLoadingMore: Bool = false
     private var lastRefreshDate: Date?
-    
+
     init(fetcher: EpisodeFetching, cache: EpisodeCaching) {
         self.fetcher = fetcher
         self.cache = cache
     }
-    
+
     func fetchEpisodes(forceRefresh: Bool = false) async {
         if forceRefresh {
             cache.clearEpisodesCache()
@@ -43,7 +43,7 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             state = .failure("Decoding error")
         }
     }
-    
+
     func loadMoreIfNeeded(currentEpisode: Episode) async {
         // Check if we are already loading or if there are no more pages
         guard !isLoadingMore, currentPage < totalPages else { return }
@@ -62,11 +62,11 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
         }
         isLoadingMore = false
     }
-    
+
     func fetchEpisodes() async {
         await fetchEpisodes(forceRefresh: false)
     }
-    
+
     /// Performs background refresh optimized for BGTaskScheduler
     /// This method is designed to run efficiently in background without UI updates
     /// - Returns: Boolean indicating success/failure of the background refresh
@@ -74,19 +74,19 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
         do {
             // Fetch first page of episodes (most recent content)
             let response = try await fetcher.fetchEpisodes(page: 1)
-            
+
             // Update cache with fresh data
             cache.saveEpisodes(response.results)
-            
+
             // Update internal state for when app returns to foreground
             episodes = response.results
             currentPage = 1
             totalPages = response.info.pages
             lastRefreshDate = Date()
-            
+
             // Do not update UI state (.loading, .success) as app is in background
             // State will be updated when app comes to foreground
-            
+
             return true
         } catch {
             // Background refresh failed, return false
@@ -94,4 +94,4 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             return false
         }
     }
-} 
+}

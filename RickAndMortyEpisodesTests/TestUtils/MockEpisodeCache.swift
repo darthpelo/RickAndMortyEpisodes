@@ -22,4 +22,4 @@ class MockEpisodeCache: EpisodeCaching {
         clearEpisodesCacheCalled = true
         storedEpisodes = nil
     }
-} 
+}

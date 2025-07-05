@@ -46,7 +46,7 @@ final class CharacterDetailLoaderViewModel: CharacterDetailLoaderViewModelProtoc
     init(fetcher: EpisodeFetching = APIService.shared) {
         self.fetcher = fetcher
     }
-    
+
     /// Loads character details from the API
     func loadCharacter(id: Int) async {
         state = .loading
@@ -57,9 +57,9 @@ final class CharacterDetailLoaderViewModel: CharacterDetailLoaderViewModelProtoc
             state = .failure(LocalizedString.failedToLoadCharacter)
         }
     }
-    
+
     /// Resets the state to idle
     func reset() {
         state = .idle
     }
-} 
+}

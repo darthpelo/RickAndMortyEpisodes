@@ -7,9 +7,9 @@ final class APIService: EpisodeFetching {
     init(session: URLSession = .shared) {
         self.session = session
     }
-    
+
     private let baseURL = "https://rickandmortyapi.com/api/"
-    
+
     // Fetches paginated episodes from the API
     func fetchEpisodes(page: Int = 1) async throws -> EpisodeResponse {
         let urlString = "\(baseURL)episode?page=\(page)"
@@ -19,7 +19,7 @@ final class APIService: EpisodeFetching {
         let (data, _) = try await session.data(from: url)
         return try JSONDecoder().decode(EpisodeResponse.self, from: data)
     }
-    
+
     // Fetches character details by ID (required by EpisodeFetching)
     func fetchCharacter(id: Int) async throws -> Character {
         let urlString = "\(baseURL)character/\(id)"

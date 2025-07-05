@@ -5,11 +5,11 @@ struct CharacterDetailView: View {
     @State private var exportMessage: String?
     @State private var shareURL: URL?
     @State private var isShareSheetPresented = false
-    
+
     init(character: Character) {
         _viewModel = StateObject(wrappedValue: CharacterDetailViewModel(character: character))
     }
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 16) {
@@ -75,4 +75,4 @@ struct CharacterDetailView_Previews: PreviewProvider {
         )
         CharacterDetailView(character: mockCharacter)
     }
-} 
+}

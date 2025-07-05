@@ -25,4 +25,4 @@ protocol EpisodeCaching {
     func saveEpisodes(_ episodes: [Episode])
     func loadEpisodes() -> [Episode]?
     func clearEpisodesCache()
-} 
+}

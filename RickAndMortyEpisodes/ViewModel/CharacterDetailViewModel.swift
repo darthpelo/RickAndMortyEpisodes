@@ -13,7 +13,7 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
     init(character: Character) {
         self.character = character
     }
-    
+
     func exportCharacterDetails() throws -> URL {
         let exportDict: [String: Any] = [
             "name": character.name,
@@ -29,4 +29,4 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
         try data.write(to: fileURL)
         return fileURL
     }
-} 
+}

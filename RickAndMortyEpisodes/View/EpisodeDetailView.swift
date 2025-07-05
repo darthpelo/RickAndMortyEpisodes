@@ -4,11 +4,11 @@ struct EpisodeDetailView: View {
     @StateObject private var viewModel: EpisodeDetailViewModel
     @State private var selectedCharacterID: Int?
     @StateObject private var loader = CharacterDetailLoaderViewModel()
-    
+
     init(episode: Episode) {
         _viewModel = StateObject(wrappedValue: EpisodeDetailViewModel(episode: episode))
     }
-    
+
     var body: some View {
         List {
             Section {
@@ -70,7 +70,7 @@ struct EpisodeDetailView: View {
             }
         )
     }
-    
+
     @ViewBuilder
     private var characterDetailDestination: some View {
         if case .success(let character) = loader.state {
@@ -98,4 +98,4 @@ struct EpisodeDetailView_Previews: PreviewProvider {
         )
         EpisodeDetailView(episode: mockEpisode)
     }
-} 
+}

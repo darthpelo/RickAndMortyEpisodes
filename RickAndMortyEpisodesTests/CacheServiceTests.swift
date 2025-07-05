@@ -1,5 +1,5 @@
-import XCTest
 @testable import RickAndMortyEpisodes
+import XCTest
 
 final class CacheServiceTests: XCTestCase {
     var sut: CacheService!
@@ -56,4 +56,4 @@ final class CacheServiceTests: XCTestCase {
         // Then
         XCTAssertNil(loaded)
     }
-} 
+}

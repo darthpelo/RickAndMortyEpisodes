@@ -1,5 +1,5 @@
-import XCTest
 @testable import RickAndMortyEpisodes
+import XCTest
 
 @MainActor
 final class CharacterDetailLoaderViewModelTests: XCTestCase {
@@ -73,4 +73,4 @@ final class CharacterDetailLoaderViewModelTests: XCTestCase {
         XCTAssertTrue(states.contains(.loading), "Expected .loading state in the sequence")
         cancellable.cancel()
     }
-} 
+}

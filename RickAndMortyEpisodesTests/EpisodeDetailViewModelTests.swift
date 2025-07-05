@@ -1,5 +1,5 @@
-import XCTest
 @testable import RickAndMortyEpisodes
+import XCTest
 
 @MainActor
 final class EpisodeDetailViewModelTests: XCTestCase {
@@ -46,4 +46,4 @@ final class EpisodeDetailViewModelTests: XCTestCase {
         // Then
         XCTAssertTrue(sut.characterIDs.isEmpty)
     }
-} 
+}

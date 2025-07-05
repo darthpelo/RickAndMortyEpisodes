@@ -4,7 +4,7 @@ import Foundation
 final class EpisodeDetailViewModel: EpisodeDetailViewModelProtocol {
     let episode: Episode
     let characterIDs: [Int]
-    
+
     init(episode: Episode) {
         self.episode = episode
         self.characterIDs = episode.characters.compactMap { urlString in
@@ -13,4 +13,4 @@ final class EpisodeDetailViewModel: EpisodeDetailViewModelProtocol {
             return id
         }
     }
-} 
+}

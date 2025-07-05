@@ -2,11 +2,11 @@ import SwiftUI
 
 struct EpisodeListView: View {
     @StateObject private var viewModel: EpisodeListViewModel
-    
+
     init(viewModel: EpisodeListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         NavigationStack {
             Group {
@@ -40,7 +40,7 @@ struct EpisodeListView: View {
                                 }
                             }
                         }
-                                        if viewModel.episodes.count > 0 {
+                                        if !viewModel.episodes.isEmpty {
                     Text(LocalizedString.endOfEpisodeList)
                         .font(.footnote)
                         .foregroundColor(.gray)
@@ -52,7 +52,7 @@ struct EpisodeListView: View {
                         await viewModel.fetchEpisodes(forceRefresh: true)
                     }
                             }
-        }
+            }
         .navigationTitle(LocalizedString.episodesTitle)
         .task { await viewModel.fetchEpisodes() }
         }
@@ -75,7 +75,7 @@ struct EpisodeListView_Previews: PreviewProvider {
                 )
             )
             .previewDisplayName("Success State")
-            
+
             // Preview: Loading State
             EpisodeListView(
                 viewModel: PreviewMockFactory.createEpisodeListViewModel(
@@ -83,7 +83,7 @@ struct EpisodeListView_Previews: PreviewProvider {
                 )
             )
             .previewDisplayName("Loading State")
-            
+
             // Preview: Error State
             EpisodeListView(
                 viewModel: PreviewMockFactory.createEpisodeListViewModel(
@@ -91,7 +91,7 @@ struct EpisodeListView_Previews: PreviewProvider {
                 )
             )
             .previewDisplayName("Network Error")
-            
+
             // Preview: Empty List
             EpisodeListView(
                 viewModel: PreviewMockFactory.createEpisodeListViewModel(
@@ -99,7 +99,7 @@ struct EpisodeListView_Previews: PreviewProvider {
                 )
             )
             .previewDisplayName("Empty List")
-            
+
             // Preview: Long List (for testing scrolling)
             EpisodeListView(
                 viewModel: PreviewMockFactory.createEpisodeListViewModel(
@@ -107,7 +107,7 @@ struct EpisodeListView_Previews: PreviewProvider {
                 )
             )
             .previewDisplayName("Long List")
-            
+
             // Preview: Dark Mode
             EpisodeListView(
                 viewModel: PreviewMockFactory.createEpisodeListViewModel(

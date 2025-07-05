@@ -3,4 +3,4 @@ struct PageInfo: Codable {
     let pages: Int
     let next: String?
     let prev: String?
-} 
+}

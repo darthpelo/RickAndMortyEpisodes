@@ -1,5 +1,5 @@
-import XCTest
 @testable import RickAndMortyEpisodes
+import XCTest
 
 @MainActor
 final class CharacterDetailViewModelTests: XCTestCase {
@@ -55,4 +55,4 @@ final class CharacterDetailViewModelTests: XCTestCase {
         XCTAssertEqual(json?["origin"] as? String, "Earth")
         XCTAssertEqual(json?["episodeCount"] as? Int, 2)
     }
-} 
+}

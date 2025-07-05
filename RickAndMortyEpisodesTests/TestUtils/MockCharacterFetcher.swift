@@ -3,7 +3,7 @@ import Foundation
 
 class MockCharacterFetcher: EpisodeFetching {
     var characterResult: Result<Character, Error>?
-    
+
     func fetchCharacter(id: Int) async throws -> Character {
         if let result = characterResult {
             switch result {
@@ -13,7 +13,7 @@ class MockCharacterFetcher: EpisodeFetching {
         }
         fatalError("MockCharacterFetcher.characterResult not set")
     }
-    
+
     func fetchEpisodes(page: Int) async throws -> EpisodeResponse {
         fatalError("Not implemented in this mock")
     }

@@ -1,5 +1,5 @@
-import XCTest
 @testable import RickAndMortyEpisodes
+import XCTest
 
 final class APIServiceTests: XCTestCase {
     var sut: APIService!
@@ -83,4 +83,4 @@ final class APIServiceTests: XCTestCase {
             XCTAssertTrue(error is DecodingError)
         }
     }
-} 
+}

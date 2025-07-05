@@ -10,4 +10,4 @@ protocol CharacterDetailViewModelProtocol: ObservableObject {
     var originName: String { get }
     var episodeCount: Int { get }
     func exportCharacterDetails() throws -> URL
-} 
+}

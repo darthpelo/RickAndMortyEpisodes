@@ -7,11 +7,11 @@ class MockURLProtocol: URLProtocol {
 
     override class func canInit(with request: URLRequest) -> Bool {
         // Intercept all requests
-        return true
+        true
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        return request
+        request
     }
 
     override func startLoading() {

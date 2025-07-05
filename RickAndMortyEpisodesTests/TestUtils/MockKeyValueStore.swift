@@ -10,6 +10,6 @@ class MockKeyValueStore: KeyValueStore {
     }
 
     func data(forKey defaultName: String) -> Data? {
-        return storage[defaultName] as? Data
+        storage[defaultName] as? Data
     }
 }

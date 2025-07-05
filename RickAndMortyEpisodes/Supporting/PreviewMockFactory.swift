@@ -4,7 +4,6 @@ import Foundation
 #if DEBUG
 /// Centralized factory for creating consistent and reusable mock data for previews
 enum PreviewMockFactory {
-    
     // MARK: - Mock Episodes
     static func createMockEpisodes() -> [Episode] {
         [
@@ -46,13 +45,13 @@ enum PreviewMockFactory {
             )
         ]
     }
-    
+
     // MARK: - Mock Characters
     static func createMockCharacter(id: Int) -> Character {
         let names = ["Rick Sanchez", "Morty Smith", "Summer Smith", "Beth Smith", "Jerry Smith", "Birdperson"]
         let species = ["Human", "Alien", "Robot", "Humanoid", "Unknown"]
         let statuses = ["Alive", "Dead", "Unknown"]
-        
+
         return Character(
             id: id,
             name: names[id % names.count],
@@ -68,7 +67,7 @@ enum PreviewMockFactory {
             created: "2017-11-04T18:48:46.250Z"
         )
     }
-    
+
     // MARK: - Mock Page Info
     static func createMockPageInfo(count: Int = 3, pages: Int = 1, hasNext: Bool = false) -> PageInfo {
         PageInfo(
@@ -78,7 +77,7 @@ enum PreviewMockFactory {
             prev: nil
         )
     }
-    
+
     // MARK: - Mock Episode Response
     static func createMockEpisodeResponse(
         episodes: [Episode] = createMockEpisodes(),
@@ -89,12 +88,12 @@ enum PreviewMockFactory {
             results: episodes
         )
     }
-    
+
     // MARK: - Specialized Mock Data for Testing Edge Cases
     static func createEmptyEpisodeList() -> [Episode] {
         []
     }
-    
+
     static func createSingleEpisode() -> Episode {
         Episode(
             id: 1,
@@ -106,7 +105,7 @@ enum PreviewMockFactory {
             created: "2017-11-10T12:56:33.798Z"
         )
     }
-    
+
     static func createLongEpisodeList() -> [Episode] {
         (1...20).map { id in
             Episode(
@@ -124,13 +123,12 @@ enum PreviewMockFactory {
 
 // MARK: - Preview Mock Services
 extension PreviewMockFactory {
-    
     /// Configurable mock fetcher for different preview scenarios
     class PreviewMockFetcher: EpisodeFetching {
         private let episodesToReturn: [Episode]
         private let shouldSimulateError: Bool
         private let simulatedDelay: TimeInterval
-        
+
         init(
             episodesToReturn: [Episode] = PreviewMockFactory.createMockEpisodes(),
             shouldSimulateError: Bool = false,
@@ -140,38 +138,38 @@ extension PreviewMockFactory {
             self.shouldSimulateError = shouldSimulateError
             self.simulatedDelay = simulatedDelay
         }
-        
+
         func fetchEpisodes(page: Int) async throws -> EpisodeResponse {
             // Simulate realistic network delay
             try await Task.sleep(nanoseconds: UInt64(simulatedDelay * 1_000_000_000))
-            
+
             if shouldSimulateError {
                 throw URLError(.notConnectedToInternet)
             }
-            
+
             return PreviewMockFactory.createMockEpisodeResponse(
                 episodes: episodesToReturn,
                 hasNextPage: page < 2
             )
         }
-        
+
         func fetchCharacter(id: Int) async throws -> Character {
             // Simulate realistic network delay
             try await Task.sleep(nanoseconds: UInt64(simulatedDelay * 0.6 * 1_000_000_000))
-            
+
             if shouldSimulateError {
                 throw URLError(.notConnectedToInternet)
             }
-            
+
             return PreviewMockFactory.createMockCharacter(id: id)
         }
     }
-    
+
     /// Configurable mock cache for different preview scenarios
     class PreviewMockCache: EpisodeCaching {
         private var storedEpisodes: [Episode]?
         private let simulateSlowAccess: Bool
-        
+
         init(
             preloadedEpisodes: [Episode]? = nil,
             simulateSlowAccess: Bool = false
@@ -179,7 +177,7 @@ extension PreviewMockFactory {
             self.storedEpisodes = preloadedEpisodes
             self.simulateSlowAccess = simulateSlowAccess
         }
-        
+
         func saveEpisodes(_ episodes: [Episode]) {
             if simulateSlowAccess {
                 // Simulate slow access to test loading states
@@ -187,7 +185,7 @@ extension PreviewMockFactory {
             }
             storedEpisodes = episodes
         }
-        
+
         func loadEpisodes() -> [Episode]? {
             if simulateSlowAccess {
                 // Simulate slow access to test loading states
@@ -195,7 +193,7 @@ extension PreviewMockFactory {
             }
             return storedEpisodes
         }
-        
+
         func clearEpisodesCache() {
             storedEpisodes = nil
         }
@@ -204,7 +202,6 @@ extension PreviewMockFactory {
 
 // MARK: - Preview ViewModel Factory
 extension PreviewMockFactory {
-    
     /// Factory for creating EpisodeListViewModel configured for different preview scenarios
     @MainActor
     static func createEpisodeListViewModel(
@@ -212,25 +209,23 @@ extension PreviewMockFactory {
         episodes: [Episode] = createMockEpisodes(),
         simulatedDelay: TimeInterval = 0.5
     ) -> EpisodeListViewModel {
-        
         let mockFetcher = PreviewMockFetcher(
             episodesToReturn: episodes,
             shouldSimulateError: scenario == .networkError,
             simulatedDelay: simulatedDelay
         )
-        
+
         let mockCache = PreviewMockCache(
             preloadedEpisodes: scenario == .success ? episodes : nil,
             simulateSlowAccess: scenario == .slowCache
         )
-        
+
         return EpisodeListViewModel(fetcher: mockFetcher, cache: mockCache)
     }
 }
 
 // MARK: - Preview Scenarios
 extension PreviewMockFactory {
-    
     /// Predefined scenarios for previews
     enum PreviewScenario {
         case success
@@ -239,7 +234,7 @@ extension PreviewMockFactory {
         case emptyList
         case slowCache
         case longList
-        
+
         var displayName: String {
             switch self {
             case .success: return "Success State"
@@ -250,7 +245,7 @@ extension PreviewMockFactory {
             case .longList: return "Long List"
             }
         }
-        
+
         var episodes: [Episode] {
             switch self {
             case .success: return PreviewMockFactory.createMockEpisodes()
@@ -263,4 +258,4 @@ extension PreviewMockFactory {
         }
     }
 }
-#endif 
+#endif

@@ -1,5 +1,5 @@
-import XCTest
 @testable import RickAndMortyEpisodes
+import XCTest
 
 @MainActor
 final class EpisodeListViewModelTests: XCTestCase {
@@ -104,26 +104,26 @@ final class EpisodeListViewModelTests: XCTestCase {
         // Given
         let episode = Episode(id: 1, name: "Pilot", airDate: "December 2, 2013", episode: "S01E01", characters: [], url: "", created: "")
         fetcher.result = .success(EpisodeResponse(info: PageInfo(count: 1, pages: 1, next: nil, prev: nil), results: [episode]))
-        
+
         // When
         let result = await sut.performBackgroundRefresh()
-        
+
         // Then
         XCTAssertTrue(result)
         XCTAssertEqual(sut.episodes.count, 1)
         XCTAssertEqual(sut.episodes.first?.name, "Pilot")
         XCTAssertTrue(cache.saveEpisodesCalled)
     }
-    
+
     func testPerformBackgroundRefreshReturnsFalseOnError() async {
         // Given
         fetcher.result = .failure(URLError(.notConnectedToInternet))
-        
+
         // When
         let result = await sut.performBackgroundRefresh()
-        
+
         // Then
         XCTAssertFalse(result)
         XCTAssertTrue(sut.episodes.isEmpty)
     }
-} 
+}
