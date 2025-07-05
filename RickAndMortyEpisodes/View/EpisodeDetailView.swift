@@ -29,12 +29,12 @@ struct EpisodeDetailView: View {
                         Button(action: {
                             selectedCharacterID = id
                             Task { await loader.loadCharacter(id: id) }
-                        }) {
+                        }, label: {
                             HStack {
                                 Text(LocalizedString.characterIdFormat(id))
                                 Spacer()
                             }
-                        }
+                        })
                     }
                 }
             }

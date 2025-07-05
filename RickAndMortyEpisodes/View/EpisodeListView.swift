@@ -40,18 +40,19 @@ struct EpisodeListView: View {
                                 }
                             }
                         }
-                                        if !viewModel.episodes.isEmpty {
-                    Text(LocalizedString.endOfEpisodeList)
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
+
+                        if !viewModel.episodes.isEmpty {
+                            Text(LocalizedString.endOfEpisodeList)
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
                     }
                     .listStyle(.plain)
                     .refreshable {
                         await viewModel.fetchEpisodes(forceRefresh: true)
                     }
-                            }
+                }
             }
         .navigationTitle(LocalizedString.episodesTitle)
         .task { await viewModel.fetchEpisodes() }

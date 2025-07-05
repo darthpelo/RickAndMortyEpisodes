@@ -30,7 +30,11 @@ final class BackgroundTaskManager: ObservableObject {
             using: nil
         ) { [weak self] task in
             Task {
-                await self?.handleBackgroundAppRefresh(task: task as! BGAppRefreshTask)
+                guard let bgTask = task as? BGAppRefreshTask else {
+                    task.setTaskCompleted(success: false)
+                    return
+                }
+                await self?.handleBackgroundAppRefresh(task: bgTask)
             }
         }
     }

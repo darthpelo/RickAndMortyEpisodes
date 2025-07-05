@@ -48,11 +48,11 @@ struct CharacterDetailView: View {
             .padding()
         }
         .navigationTitle(LocalizedString.characterDetailsTitle)
-        .sheet(isPresented: $isShareSheetPresented, onDismiss: { shareURL = nil }) {
+        .sheet(isPresented: $isShareSheetPresented, onDismiss: { shareURL = nil }, content: {
             if let url = shareURL {
                 ShareSheet(activityItems: [url])
             }
-        }
+        })
     }
 }
 

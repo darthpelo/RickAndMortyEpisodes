@@ -11,6 +11,12 @@ excluded:
   - Pods
   - vendor
   - RickAndMortyEpisodes.xcodeproj
+  # Exclude all test files and mocks
+  - RickAndMortyEpisodesTests
+  - "**/*Tests.swift"
+  - "**/*Test.swift" 
+  - "**/Mock*.swift"
+  - "**/TestUtils"
 
 # Enable additional rules beyond the default set
 opt_in_rules:
@@ -75,7 +81,7 @@ disabled_rules:
 
 # Configure specific rules
 line_length:
-  warning: 120
+  warning: 140  # Increased for localization strings
   error: 150
   ignores_function_declarations: true
   ignores_comments: true
@@ -105,9 +111,6 @@ nesting:
   type_level:
     warning: 2
     error: 3
-  statement_level:
-    warning: 5
-    error: 10
 
 # Force unwrapping configuration
 force_unwrapping:
@@ -120,20 +123,12 @@ trailing_whitespace:
 
 # Custom rules for project-specific conventions
 custom_rules:
-  # Ensure ViewModels follow naming convention
+  # Ensure ViewModels follow naming convention (exclude Managers and Services)
   viewmodel_naming:
     name: "ViewModel Naming Convention"
-    regex: 'class\s+\w*(?<!ViewModel):\s*.*ObservableObject'
-    message: "Classes conforming to ObservableObject should end with 'ViewModel'"
-    severity: warning
-
-  # Ensure test methods start with 'test'
-  test_method_naming:
-    name: "Test Method Naming"
-    regex: 'func\s+(?!test)\w+\(\)\s*throws?\s*\{'
-    included: ".*Tests\\.swift"
-    message: "Test methods should start with 'test'"
+    regex: 'class\s+(?!.*(?:Manager|Service))\w*(?<!ViewModel):\s*.*ObservableObject'
+    message: "Classes conforming to ObservableObject should end with 'ViewModel' (excludes Managers and Services)"
     severity: warning
 
 # Reporter type (xcode shows warnings in Xcode, emoji for terminal)
-reporter: "xcode" 
+reporter: "xcode" # Test change

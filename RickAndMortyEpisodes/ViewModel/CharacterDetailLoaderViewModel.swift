@@ -13,7 +13,7 @@ extension CharacterDetailLoaderState: Equatable {
         switch (lhs, rhs) {
         case (.idle, .idle), (.loading, .loading):
             return true
-        case (.failure(let l), .failure(let r)):
+        case let (.failure(l), .failure(r)):
             return l == r
         case (.success, .success):
             return true // We don't compare the Character
