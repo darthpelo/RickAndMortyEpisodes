@@ -9,7 +9,6 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     private var currentPage: Int = 1
     private var totalPages: Int = 1
     private var isLoadingMore: Bool = false
-    private var lastRefreshDate: Date?
 
     init(fetcher: EpisodeFetching, cache: EpisodeCaching) {
         self.fetcher = fetcher
@@ -34,7 +33,6 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             state = .success
             currentPage = 1
             totalPages = response.info.pages
-            lastRefreshDate = Date()
         } catch _ as URLError {
             episodes = []
             state = .failure("Network error")
@@ -72,7 +70,7 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
     /// - Returns: Boolean indicating success/failure of the background refresh
     func performBackgroundRefresh() async -> Bool {
         do {
-            // Fetch first page of episodes (most recent content)
+            // Fetch first page of episodes
             let response = try await fetcher.fetchEpisodes(page: 1)
 
             // Update cache with fresh data
@@ -82,7 +80,6 @@ final class EpisodeListViewModel: EpisodeListViewModelProtocol {
             episodes = response.results
             currentPage = 1
             totalPages = response.info.pages
-            lastRefreshDate = Date()
 
             // Do not update UI state (.loading, .success) as app is in background
             // State will be updated when app comes to foreground
