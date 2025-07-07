@@ -8,7 +8,7 @@ final class BackgroundTaskManager: ObservableObject {
 
     /// Unique identifier for background app refresh task
     /// Must match the identifier in Info.plist
-    private static let backgroundRefreshTaskIdentifier = "com.rickandmorty.episodes.refresh"
+    private static let backgroundRefreshTaskIdentifier = "com.alessioroberto.RickAndMortyEpisodes.refresh"
 
     // MARK: - Properties
 
@@ -51,6 +51,17 @@ final class BackgroundTaskManager: ObservableObject {
         do {
             try BGTaskScheduler.shared.submit(request)
             print("✅ Background app refresh scheduled successfully")
+        } catch let error as BGTaskScheduler.Error {
+            switch error.code {
+            case .notPermitted:
+                print("❌ Background refresh not permitted. Check Settings → General → Background App Refresh")
+            case .tooManyPendingTaskRequests:
+                print("⚠️ Too many pending task requests")
+            case .unavailable:
+                print("⚠️ Background tasks unavailable (Simulator/Debug mode limitation)")
+            @unknown default:
+                print("❌ Unknown BGTaskScheduler error: \(error)")
+            }
         } catch {
             print("❌ Failed to schedule background app refresh: \(error)")
         }
@@ -83,17 +94,3 @@ final class BackgroundTaskManager: ObservableObject {
         }
     }
 }
-
-// MARK: - Debugging Support
-
-#if DEBUG
-extension BackgroundTaskManager {
-    /// Debug method to simulate background app refresh
-    /// Use this in debugger: e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"com.rickandmorty.episodes.refresh"]
-    func simulateBackgroundAppRefresh() {
-        print("🔍 Simulating background app refresh...")
-        // This method can be used for testing purposes
-        // The actual simulation should be done via Xcode debugger commands
-    }
-}
-#endif

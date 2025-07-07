@@ -4,11 +4,11 @@
 <dict>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
+		<string>background-app-refresh</string>
 	</array>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.rickandmorty.episodes.refresh</string>
+		<string>com.alessioroberto.RickAndMortyEpisodes.refresh</string>
 	</array>
 </dict>
 </plist>
