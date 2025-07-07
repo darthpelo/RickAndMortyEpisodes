@@ -18,11 +18,7 @@ This is a SwiftUI iOS application displaying Rick and Morty episodes using the o
 - ✅ **Handle API failures**: Comprehensive error handling with retry mechanisms
 - ✅ **Loading and error states**: Visual feedback for all application states
 - ✅ **Background refresh**: True BGTaskScheduler-based background app refresh
-- ✅ **Pull to refresh**: Manual refresh via drag gesture
 - ✅ **Pagination**: Automatic loading of additional episodes
-- ✅ **Persistence**: Local data caching using UserDefaults
-- ✅ **Timestamp**: Last refresh time display
-- ✅ **Unit tests**: Comprehensive test coverage >80%
 - ✅ **SOLID principles**: Clean architecture implementation
 - ✅ **English documentation**: All documentation in English
 - ✅ **Localization**: Dutch + English language support
@@ -30,11 +26,13 @@ This is a SwiftUI iOS application displaying Rick and Morty episodes using the o
 ### Bonus Features (Implemented)
 - ✅ **Persistence Mechanism**: Data saved locally with cache
 - ✅ **Pull to Refresh**: Refresh mechanism via drag gesture
-- ✅ **Timestamp**: Shows last time content was refreshed
 - ✅ **Unit Tests**: Complete unit tests including background refresh
 - ✅ **Localization**: Professional Dutch + English translations
 
-**Note**: UI tests were not implemented due to time constraints, with focus placed on comprehensive unit test coverage and core functionality.
+**Note**:
+
+- ❌ **Timestamp**
+- ❌ **UI tests**: not implemented due to time constraints, with focus placed on comprehensive unit test coverage and core functionality.
 
 ### Character Details Implementation
 **Important**: In episode details, only character IDs are displayed (not character names loaded asynchronously). Character names are only shown when user taps on a character ID to view full character details.
@@ -55,14 +53,14 @@ This is a SwiftUI iOS application displaying Rick and Morty episodes using the o
 ### Background App Refresh
 **True Background Refresh Implementation**:
 - **BGTaskScheduler**: iOS framework for background task management
-- **Task Identifier**: `com.rickandmorty.episodes.refresh`
+- **Task Identifier**: `com.alessioroberto.RickAndMortyEpisodes.refresh`
 - **BackgroundTaskManager**: Centralized background task handling
 - **Automatic Rescheduling**: Self-managing background task lifecycle
 - **Optimized Background Execution**: `performBackgroundRefresh()` method for efficiency
 
 #### Background Refresh Requirements
 - Info.plist `UIBackgroundModes`: `["background-fetch"]`
-- Info.plist `BGTaskSchedulerPermittedIdentifiers`: `["com.rickandmorty.episodes.refresh"]`
+- Info.plist `BGTaskSchedulerPermittedIdentifiers`: `["com.alessioroberto.RickAndMortyEpisodes.refresh"]`
 - App registration of background tasks during launch
 - BGTaskScheduler task handling and rescheduling
 
@@ -156,7 +154,7 @@ This is a SwiftUI iOS application displaying Rick and Morty episodes using the o
 </array>
 <key>BGTaskSchedulerPermittedIdentifiers</key>
 <array>
-    <string>com.rickandmorty.episodes.refresh</string>
+    <string>com.alessioroberto.RickAndMortyEpisodes.refresh</string>
 </array>
 ```
 
