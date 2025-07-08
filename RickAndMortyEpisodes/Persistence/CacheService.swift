@@ -1,5 +1,11 @@
 import Foundation
 
+protocol EpisodeCaching {
+    func saveEpisodes(_ episodes: [Episode])
+    func loadEpisodes() -> [Episode]?
+    func clearEpisodesCache()
+}
+
 public protocol KeyValueStore {
     func set(_ value: Any?, forKey defaultName: String)
     func data(forKey defaultName: String) -> Data?

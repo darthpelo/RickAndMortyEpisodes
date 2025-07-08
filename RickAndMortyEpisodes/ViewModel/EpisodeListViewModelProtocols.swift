@@ -15,14 +15,3 @@ protocol EpisodeListViewModelProtocol: ObservableObject {
     func loadMoreIfNeeded(currentEpisode: Episode) async
     func performBackgroundRefresh() async -> Bool
 }
-
-protocol EpisodeFetching {
-    func fetchEpisodes(page: Int) async throws -> EpisodeResponse
-    func fetchCharacter(id: Int) async throws -> Character
-}
-
-protocol EpisodeCaching {
-    func saveEpisodes(_ episodes: [Episode])
-    func loadEpisodes() -> [Episode]?
-    func clearEpisodesCache()
-}

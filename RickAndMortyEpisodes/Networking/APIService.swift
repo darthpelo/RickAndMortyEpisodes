@@ -1,5 +1,10 @@
 import Foundation
 
+protocol EpisodeFetching {
+    func fetchEpisodes(page: Int) async throws -> EpisodeResponse
+    func fetchCharacter(id: Int) async throws -> Character
+}
+
 final class APIService: EpisodeFetching {
     static let shared = APIService()
     // URLSession is injected for testability; defaults to .shared
